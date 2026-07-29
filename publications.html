@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="长安大学公路学院 Mark课题组科研项目、学术论文、知识产权与科研奖励。">
+
+    <meta name="theme-color" content="#071b2f">
+
+    <title>科研成果 - 长安大学 Mark课题组</title>
+
+    <!-- 网站公共样式 -->
+    <link rel="stylesheet" href="CSS/style.css">
+
+    <!-- 网站公共脚本 -->
+    <script src="JS/main.js" defer></script>
+
+    <!-- 科研成果页面专用样式 -->
+    <link rel="stylesheet" href="CSS/publications.css">
+</head>
+
+<body class="publications-page">
+
+    <a class="skip-link" href="#main-content">跳至主要内容</a>
+
+    <!-- 顶部信息栏 -->
+    <div class="site-topbar">
+        <span>长安大学公路学院 · Mark课题组</span>
+        <span>ROAD · MATERIALS · ENERGY</span>
+    </div>
+
+    <!-- 主导航 -->
+    <nav class="navbar" aria-label="主导航">
+
+        <a class="logo" href="index.html">
+            <span class="logo-mark">M</span>
+
+            <span class="logo-text">
+                <strong>Mark课题组</strong>
+                <span>长安大学公路学院</span>
+            </span>
+        </a>
+
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="打开或关闭主导航">
+            <span class="nav-toggle-label">菜单</span>
+            <span class="nav-toggle-icon" aria-hidden="true"></span>
+        </button>
+
+        <ul id="primary-navigation">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="about.html">课题组简介</a></li>
+            <li><a href="research.html">研究方向</a></li>
+            <li><a href="members.html">团队成员</a></li>
+
+            <li>
+                <a class="active" aria-current="page" href="publications.html">科研成果</a>
+            </li>
+
+            <li><a href="news.html">学术动态</a></li>
+            <li><a href="join.html">联系我们</a></li>
+        </ul>
+    </nav>
+
+    <main id="main-content">
+
+        <!-- 页面首屏 -->
+        <header class="page-header publications-header">
+            <div>
+                <span class="hero-kicker">RESEARCH OUTPUTS</span>
+
+                <h1>科研成果</h1>
+
+                <p>系统记录课题组在科研项目、学术论文、知识产权与科研奖励等方面形成的研究积累。</p>
+            </div>
+        </header>
+
+        <!-- 成果分类概览 -->
+        <section class="output-overview">
+
+            <div class="output-heading">
+                <div>
+                    <span class="eyebrow">Output System</span>
+
+                    <h2>成果分类</h2>
+                </div>
+
+                <p>按成果年份与成果类型建立双重筛选体系，便于快速查询不同阶段、不同类别的科研成果。</p>
+            </div>
+
+            <div class="output-stats">
+
+                <article class="output-stat-card">
+                    <strong class="output-stat-code">PROJECTS</strong>
+
+                    <div class="output-stat-content">
+                        <span class="output-stat-name">科研与教改项目</span>
+
+                        <b class="output-stat-number" data-overview-count="project">0</b>
+                    </div>
+                </article>
+
+                <article class="output-stat-card">
+                    <strong class="output-stat-code">PAPERS</strong>
+
+                    <div class="output-stat-content">
+                        <span class="output-stat-name">学术论文</span>
+
+                        <b class="output-stat-number" data-overview-count="paper">0</b>
+                    </div>
+                </article>
+
+                <article class="output-stat-card">
+                    <strong class="output-stat-code">PATENTS</strong>
+
+                    <div class="output-stat-content">
+                        <span class="output-stat-name">专利与软件著作权</span>
+
+                        <b class="output-stat-number" data-overview-count="intellectual-property">0</b>
+                    </div>
+                </article>
+
+                <article class="output-stat-card">
+                    <strong class="output-stat-code">AWARDS</strong>
+
+                    <div class="output-stat-content">
+                        <span class="output-stat-name">竞赛与科研奖励</span>
+
+                        <b class="output-stat-number" data-overview-count="award">0</b>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- 筛选与成果列表 -->
+        <div class="publications-layout">
+
+            <!-- 左侧筛选导航 -->
+            <aside class="facet-sidebar" aria-label="科研成果筛选">
+                <form class="facet-panel" id="publication-filter">
+                    <div class="facet-panel-header">
+                        <h2>筛选成果</h2>
+
+                        <button class="facet-reset-button" type="button" data-reset-filters disabled>清除筛选</button>
+                    </div>
+
+                    <div class="facet-panel-body">
+
+                        <!-- 年份筛选 -->
+                        <section class="facet-group" aria-labelledby="year-filter-title">
+                            <div class="facet-group-heading">
+                                <h3 id="year-filter-title">成果年份</h3>
+
+                                <span>可多选</span>
+                            </div>
+
+                            <ul class="facet-options">
+
+                                <!-- 2026 -->
+                                <li class="facet-option" data-facet-option>
+                                    <label>
+                                        <input type="checkbox" name="publication-year" value="2026" data-filter-year>
+
+                                        <span class="facet-checkbox" aria-hidden="true"></span>
+
+                                        <span class="facet-option-name"><span class="facet-year-number"> 2026</span>
+
+                                            <span class="facet-year-unit">年</span>
+                                        </span>
+
+                                        <span class="facet-option-count" data-year-count="2026">0</span>
+                                    </label>
+                                </li>
+
+                                <!-- 2025 -->
+                                <li class="facet-option" data-facet-option>
+                                    <label>
+                                        <input type="checkbox" name="publication-year" value="2025" data-filter-year>
+
+                                        <span class="facet-checkbox" aria-hidden="true"></span>
+
+                                        <span class="facet-option-name"><span class="facet-year-number"> 2025</span>
+
+                                            <span class="facet-year-unit">年</span>
+                                        </span>
+
+                                        <span class="facet-option-count" data-year-count="2025">0</span>
+                                    </label>
+                                </li>
+
+                                <!-- 2024 -->
+                                <li class="facet-option" data-facet-option>
+                                    <label>
+                                        <input type="checkbox" name="publication-year" value="2024" data-filter-year>
+
+                                        <span class="facet-checkbox" aria-hidden="true"></span>
+
+                                        <span class="facet-option-name"><span class="facet-year-number"> 2024</span>
+
+                                            <span class="facet-year-unit">年</span>
+                                        </span>
+
+                                        <span class="facet-option-count" data-year-count="2024">0</span>
+                                    </label>
+                                </li>
+
+                                <!-- 2023 -->
+                                <li class="facet-option" data-facet-option>
+                                    <label>
+                                        <input type="checkbox" name="publication-year" value="2023" data-filter-year>
+
+                                        <span class="facet-checkbox" aria-hidden="true"></span>
+
+                                        <span class="facet-option-name"><span class="facet-year-number"> 2023</span>
+
+                                            <span class="facet-year-unit">年</span>
+                                        </span>
+
+                                        <span class="facet-option-count" data-year-count="2023">0</span>
+                                    </label>
+                                </li>
+
+                            </ul>
+                        </section>
+
+                        <!-- 成果类型筛选 -->
+                        <section class="facet-group" aria-labelledby="type-filter-title">
+                            <div class="facet-group-heading">
+                                <h3 id="type-filter-title">成果种类</h3>
+
+                                <span>可多选</span>
+                            </div>
+
+                            <ul class="facet-options">
+
+                                <!-- 科研项目 -->
+                                <li class="facet-option" data-facet-option>
+                                    <label>
+                                        <input type="checkbox" name="publication-type" value="project" data-filter-type>
+
+                                        <span class="facet-checkbox" aria-hidden="true"></span>
+
+                                        <span class="facet-option-name">科研与教改项目</span>
+
+                                        <span class="facet-option-count" data-type-count="project">0</span>
+                                    </label>
+                                </li>
+
+                                <!-- 学术论文 -->
+                                <li class="facet-option" data-facet-option>
+                                    <label>
+                                        <input type="checkbox" name="publication-type" value="paper" data-filter-type>
+
+                                        <span class="facet-checkbox" aria-hidden="true"></span>
+
+                                        <span class="facet-option-name">学术论文</span>
+
+                                        <span class="facet-option-count" data-type-count="paper">0</span>
+                                    </label>
+                                </li>
+
+                                <!-- 知识产权 -->
+                                <li class="facet-option" data-facet-option>
+                                    <label>
+                                        <input type="checkbox" name="publication-type" value="intellectual-property" data-filter-type>
+
+                                        <span class="facet-checkbox" aria-hidden="true"></span>
+
+                                        <span class="facet-option-name">专利与软件著作权</span>
+
+                                        <span class="facet-option-count" data-type-count="intellectual-property">0</span>
+                                    </label>
+                                </li>
+
+                                <!-- 奖励 -->
+                                <li class="facet-option" data-facet-option>
+                                    <label>
+                                        <input type="checkbox" name="publication-type" value="award" data-filter-type>
+
+                                        <span class="facet-checkbox" aria-hidden="true"></span>
+
+                                        <span class="facet-option-name">竞赛与科研奖励</span>
+
+                                        <span class="facet-option-count" data-type-count="award">0</span>
+                                    </label>
+                                </li>
+
+                            </ul>
+                        </section>
+
+                        <p class="facet-help">同一组内可选择多个条件；年份和成果种类之间采用组合筛选。</p>
+
+                    </div>
+                </form>
+            </aside>
+
+            <!-- 右侧成果结果 -->
+            <section class="publication-results" aria-labelledby="results-title">
+                <div class="results-toolbar">
+
+                    <div class="results-summary">
+                        <strong id="results-title">筛选结果</strong>
+
+                        <span>
+                            共
+                            <b class="results-count-number" data-visible-result-count>0</b>
+                            项
+                        </span>
+                    </div>
+
+                    <span class="results-status" data-results-status>显示全部成果</span>
+                </div>
+
+                <!-- 当前筛选条件 -->
+                <div class="active-filters" data-active-filters hidden>
+                    <span class="active-filter-label">已选条件</span>
+
+                    <div class="active-filter-list" data-active-filter-list></div></div>
+
+                <!-- 成果记录容器 -->
+                <div class="achievement-results-list" data-achievement-results>
+
+                    <!-- ===== 成果条目：从这里开始编辑 ===== -->
+                    <!-- 新增成果时，复制一整个 achievement-record article，并同步修改年份、类型和详细信息。 -->
+                    <article class="achievement-record" data-achievement-record data-year="2026" data-type="paper">
+                        <!-- 左侧年份和成果类型 -->
+                        <div class="record-meta">
+                            <span class="record-year">2026</span>
+
+                            <span class="record-type">学术论文</span>
+                        </div>
+                        <!-- 右侧论文信息 -->
+                        <div class="record-content">
+                            <!-- 论文题目 -->
+                            <h3>Enhancing asphalt performance through chemical crosslinking of olefin block copolymers</h3>
+                            <!-- 题目下方显示的主要作者 -->
+                            <p class="record-author-line">Yang, Pengkai; Fu, Zhen; Ma, Feng</p>
+                            <!-- 论文详细信息 -->
+                            <div class="record-bibliography">
+                                <!-- 完整作者信息 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">作者</span>
+                                    <span class="bibliography-value">Yang, Pengkai; Fu, Zhen；Ma, Feng; Jiang, Xinye; Dong, Wenhao; Hou, Yingjie; Dai, Jiasheng; Zhao, Zedong</span>
+                                </div>
+                                <!-- 期刊名称 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">期刊</span>
+                                    <span class="bibliography-value">COLLOIDS AND SURFACES A-PHYSICOCHEMICAL AND ENGINEERING ASPECTS</span>
+                                </div>
+                                <!-- 卷期页码或文章编号 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">卷期页码</span>
+                                    <span class="bibliography-value">749: 141218</span>
+                                </div>
+                                <!-- DOI -->
+                                <div class="bibliography-item doi-item">
+                                    <span class="bibliography-label">DOI</span>
+                                    <span class="bibliography-value">
+                                        <a class="bibliography-link" href="https://doi.org/10.1016/j.colsurfa.2026.141218" target="_blank" rel="noopener noreferrer">10.3969/ji.ssn.1001-9731.2025.08.027</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="achievement-record" data-achievement-record data-year="2026" data-type="paper">
+                        <!-- 左侧年份和成果类型 -->
+                        <div class="record-meta">
+                            <span class="record-year">2026</span>
+
+                            <span class="record-type">学术论文</span>
+                        </div>
+                        <!-- 右侧论文信息 -->
+                        <div class="record-content">
+                            <!-- 论文题目 -->
+                            <h3>Synergistic electrical-fatigue performance of asphalt mixtures with embedded piezoelectric energy harvesters</h3>
+                            <!-- 题目下方显示的主要作者 -->
+                            <p class="record-author-line">Zhao, Zedong; Ma, Feng; Fu, Zhen</p>
+                            <!-- 论文详细信息 -->
+                            <div class="record-bibliography">
+                                <!-- 完整作者信息 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">作者</span>
+                                    <span class="bibliography-value">Zhao, Zedong; Ma, Feng; Fu, Zhen; Si, Shaofeng</span>
+                                </div>
+                                <!-- 期刊名称 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">期刊</span>
+                                    <span class="bibliography-value">COLLOIDS AND SURFACES A-PHYSICOCHEMICAL AND ENGINEERING ASPECTS</span>
+                                </div>
+                                <!-- 卷期页码或文章编号 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">卷期页码</span>
+                                    <span class="bibliography-value">535: 146989</span>
+                                </div>
+                                <!-- DOI -->
+                                <div class="bibliography-item doi-item">
+                                    <span class="bibliography-label">DOI</span>
+                                    <span class="bibliography-value">
+                                        <a class="bibliography-link" href="https://doi.org/10.1016/j.conbuildmat.2026.146989" target="_blank" rel="noopener noreferrer">10.3969/ji.ssn.1001-9731.2025.08.027</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="achievement-record" data-achievement-record data-year="2025" data-type="paper">
+                        <div class="record-meta">
+                            <span class="record-year">2025</span>
+
+                            <span class="record-type">学术论文</span>
+                        </div>
+
+                        <div class="record-content">
+
+                            <h3>Impact of temperature-controlled salt storage fillers on the rheological properties of asphalt mastics</h3>
+
+                            <p class="record-author-line">Y.J. Hou, F. Ma, Z. Fu</p>
+
+                            <div class="record-bibliography">
+
+                                <!-- 作者 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">作者</span>
+
+                                    <span class="bibliography-value">Y.J. Hou, F. Ma, Z. Fu, Y.J. Tang, X.Y. Jiang, P.K. Yang, J.S. Dai</span>
+                                </div>
+
+                                <!-- 期刊 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">期刊</span>
+
+                                    <span class="bibliography-value">Construction and Building Materials</span>
+                                </div>
+
+                                <!-- 卷期页码 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">卷期页码</span>
+
+                                    <span class="bibliography-value">493 (2025) 143156</span>
+                                </div>
+
+                                <!-- DOI -->
+                                <div class="bibliography-item doi-item">
+                                    <span class="bibliography-label">DOI</span>
+
+                                    <span class="bibliography-value">
+                                        <a class="bibliography-link" href="https://doi.org/10.1016/j.conbuildmat.2025.143156" target="_blank" rel="noopener noreferrer">10.1016/j.conbuildmat.2025.143156</a>
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="achievement-record" data-achievement-record data-year="2026" data-type="paper">
+                        <!-- 左侧年份和成果类型 -->
+                        <div class="record-meta">
+                            <span class="record-year">2026</span>
+
+                            <span class="record-type">学术论文</span>
+                        </div>
+
+                        <!-- 右侧论文信息 -->
+                        <div class="record-content">
+
+                            <!-- 论文题目 -->
+                            <h3>Recycling Waste Polyethylene Terephthalate for Asphalt Modification: A Comprehensive Review on Material Properties， Processing Techniques， and Engineering Applications</h3>
+
+                            <!-- 题目下方显示的主要作者 -->
+                            <p class="record-author-line">Huang, Ruizhe; Ma, Feng; Shi, Ke</p>
+
+                            <!-- 论文详细信息 -->
+                            <div class="record-bibliography">
+
+                                <!-- 完整作者信息 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">作者</span>
+
+                                    <span class="bibliography-value">Ruizhe Huang, Feng Ma, Ke Shi, Zhen Fu, Jenny Liu</span>
+                                </div>
+
+                                <!-- 期刊名称 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">期刊</span>
+
+                                    <span class="bibliography-value">Journal of Road Engineering</span>
+                                </div>
+
+                                <!-- 卷期页码或文章编号 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">卷期页码</span>
+
+                                    <span class="bibliography-value">（网络首发）</span>
+                                </div>
+
+                                <!-- DOI -->
+                                <div class="bibliography-item doi-item">
+                                    <span class="bibliography-label">DOI</span>
+
+                                    <span class="bibliography-value">
+                                        <a class="bibliography-link" href="https://doi.org/在这里填写DOI号" target="_blank" rel="noopener noreferrer">（暂无）</a>
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="achievement-record" data-achievement-record data-year="2026" data-type="paper">
+                        <!-- 左侧年份和成果类型 -->
+                        <div class="record-meta">
+                            <span class="record-year">2026</span>
+
+                            <span class="record-type">学术论文</span>
+                        </div>
+
+                        <!-- 右侧论文信息 -->
+                        <div class="record-content">
+
+                            <!-- 论文题目 -->
+                            <h3>有机硅-聚丙酸酯改性明色沥青流变性能评价</h3>
+
+                            <!-- 题目下方显示的主要作者 -->
+                            <p class="record-author-line">马峰，唐瑭，史柯</p>
+
+                            <!-- 论文详细信息 -->
+                            <div class="record-bibliography">
+
+                                <!-- 完整作者信息 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">作者</span>
+
+                                    <span class="bibliography-value">马峰，唐瑭，史柯，王宇行，刘金亮，傅珍，王蒙蒙</span>
+                                </div>
+
+                                <!-- 期刊名称 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">期刊</span>
+
+                                    <span class="bibliography-value">长安大学学报(自然科学版)</span>
+                                </div>
+
+                                <!-- 卷期页码或文章编号 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">卷期页码</span>
+
+                                    <span class="bibliography-value">46(2): 1-14</span>
+                                </div>
+
+                                <!-- DOI -->
+                                <div class="bibliography-item doi-item">
+                                    <span class="bibliography-label">DOI</span>
+
+                                    <span class="bibliography-value">
+                                        <a class="bibliography-link" href="https://doi.org/在这里填写DOI号" target="_blank" rel="noopener noreferrer">10.19721/j.cnki.1671-8879.2026.02.001</a>
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="achievement-record" data-achievement-record data-year="2026" data-type="paper">
+                        <!-- 左侧年份和成果类型 -->
+                        <div class="record-meta">
+                            <span class="record-year">2026</span>
+
+                            <span class="record-type">学术论文</span>
+                        </div>
+
+                        <!-- 右侧论文信息 -->
+                        <div class="record-content">
+
+                            <!-- 论文题目 -->
+                            <h3>冻融循环作用下多孔沥青混合料损伤机制研究</h3>
+
+                            <!-- 题目下方显示的主要作者 -->
+                            <p class="record-author-line">马峰，盛函驰，黄锐哲</p>
+
+                            <!-- 论文详细信息 -->
+                            <div class="record-bibliography">
+
+                                <!-- 完整作者信息 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">作者</span>
+
+                                    <span class="bibliography-value">马峰，盛函驰，黄锐哲，张璟，傅珍，祝崇鑫</span>
+                                </div>
+
+                                <!-- 期刊名称 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">期刊</span>
+
+                                    <span class="bibliography-value">重庆交通大学学报(自然科学版)</span>
+                                </div>
+
+                                <!-- 卷期页码或文章编号 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">卷期页码</span>
+
+                                    <span class="bibliography-value">（网络首发）</span>
+                                </div>
+
+                                <!-- DOI -->
+                                <div class="bibliography-item doi-item">
+                                    <span class="bibliography-label">DOI</span>
+
+                                    <span class="bibliography-value">
+                                        <a class="bibliography-link" href="https://doi.org/暂无" target="_blank" rel="noopener noreferrer">（暂无）</a>
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="achievement-record" data-achievement-record data-year="2026" data-type="paper">
+                        <!-- 左侧年份和成果类型 -->
+                        <div class="record-meta">
+                            <span class="record-year">2026</span>
+
+                            <span class="record-type">学术论文</span>
+                        </div>
+
+                        <!-- 右侧论文信息 -->
+                        <div class="record-content">
+
+                            <!-- 论文题目 -->
+                            <h3>寒区高黏沥青低温流变及混合料路用性能研究</h3>
+
+                            <!-- 题目下方显示的主要作者 -->
+                            <p class="record-author-line">马峰，伍赛林，姜欣野</p>
+
+                            <!-- 论文详细信息 -->
+                            <div class="record-bibliography">
+
+                                <!-- 完整作者信息 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">作者</span>
+
+                                    <span class="bibliography-value">马峰，伍赛林，姜欣野，傅珍，郝宏剑，祝崇鑫，张璟</span>
+                                </div>
+
+                                <!-- 期刊名称 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">期刊</span>
+
+                                    <span class="bibliography-value">功能材料</span>
+                                </div>
+
+                                <!-- 卷期页码或文章编号 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">卷期页码</span>
+
+                                    <span class="bibliography-value">57(2): 1-9</span>
+                                </div>
+
+                                <!-- DOI -->
+                                <div class="bibliography-item doi-item">
+                                    <span class="bibliography-label">DOI</span>
+
+                                    <span class="bibliography-value">
+                                        <a class="bibliography-link" href="https://doi.org/在这里填写DOI号" target="_blank" rel="noopener noreferrer">10.3969/ji.ssn.1001-9731.2026.02.001</a>
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="achievement-record" data-achievement-record data-year="2026" data-type="paper">
+                        <!-- 左侧年份和成果类型 -->
+                        <div class="record-meta">
+                            <span class="record-year">2026</span>
+
+                            <span class="record-type">学术论文</span>
+                        </div>
+
+                        <!-- 右侧论文信息 -->
+                        <div class="record-content">
+
+                            <!-- 论文题目 -->
+                            <h3>高原地区高黏沥青流变及老化性能</h3>
+
+                            <!-- 题目下方显示的主要作者 -->
+                            <p class="record-author-line">马峰，段霖波，韦振勋</p>
+
+                            <!-- 论文详细信息 -->
+                            <div class="record-bibliography">
+
+                                <!-- 完整作者信息 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">作者</span>
+
+                                    <span class="bibliography-value">马峰，段霖波，韦振勋，董文豪，傅珍，彭冲</span>
+                                </div>
+
+                                <!-- 期刊名称 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">期刊</span>
+
+                                    <span class="bibliography-value">应用化工</span>
+                                </div>
+
+                                <!-- 卷期页码或文章编号 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">卷期页码</span>
+
+                                    <span class="bibliography-value">55(5): 1363-1368</span>
+                                </div>
+
+                                <!-- DOI -->
+                                <div class="bibliography-item doi-item">
+                                    <span class="bibliography-label">DOI</span>
+
+                                    <span class="bibliography-value">
+                                        <a class="bibliography-link" href="https://doi.org/10.16581/j.cnki.issn1671-3206.2026.05.009" target="_blank" rel="noopener noreferrer">10.16581/j.cnki.issn1671-3206.2026.05.009</a>
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="achievement-record" data-achievement-record data-year="2026" data-type="paper">
+                        <!-- 左侧年份和成果类型 -->
+                        <div class="record-meta">
+                            <span class="record-year">2026</span>
+
+                            <span class="record-type">学术论文</span>
+                        </div>
+
+                        <!-- 右侧论文信息 -->
+                        <div class="record-content">
+
+                            <!-- 论文题目 -->
+                            <h3>高黏改性多孔沥青混合料路用性能评价</h3>
+
+                            <!-- 题目下方显示的主要作者 -->
+                            <p class="record-author-line">马峰，赵亮，黄锐哲</p>
+
+                            <!-- 论文详细信息 -->
+                            <div class="record-bibliography">
+
+                                <!-- 完整作者信息 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">作者</span>
+
+                                    <span class="bibliography-value">马峰，赵亮，黄锐哲，傅珍，彭冲</span>
+                                </div>
+
+                                <!-- 期刊名称 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">期刊</span>
+
+                                    <span class="bibliography-value">应用化工</span>
+                                </div>
+
+                                <!-- 卷期页码或文章编号 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">卷期页码</span>
+
+                                    <span class="bibliography-value">55(4): 847-851+864</span>
+                                </div>
+
+                                <!-- DOI -->
+                                <div class="bibliography-item doi-item">
+                                    <span class="bibliography-label">DOI</span>
+
+                                    <span class="bibliography-value">
+                                        <a class="bibliography-link" href="https://doi.org/10.16581/j.cnki.issn1671-3206.2026.05.009" target="_blank" rel="noopener noreferrer">10.16581/j.cnki.issn1671-3206.2026.05.009</a>
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="achievement-record" data-achievement-record data-year="2025" data-type="paper">
+                        <!-- 左侧年份和成果类型 -->
+                        <div class="record-meta">
+                            <span class="record-year">2025</span>
+
+                            <span class="record-type">学术论文</span>
+                        </div>
+
+                        <!-- 右侧论文信息 -->
+                        <div class="record-content">
+
+                            <!-- 论文题目 -->
+                            <h3>不同温拌剂对寒区多孔沥青混合料性能的影响</h3>
+
+                            <!-- 题目下方显示的主要作者 -->
+                            <p class="record-author-line">马峰，高绍祥，傅珍</p>
+
+                            <!-- 论文详细信息 -->
+                            <div class="record-bibliography">
+
+                                <!-- 完整作者信息 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">作者</span>
+
+                                    <span class="bibliography-value">马峰，高绍祥，傅珍，侯英杰，杨宇峰</span>
+                                </div>
+
+                                <!-- 期刊名称 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">期刊</span>
+
+                                    <span class="bibliography-value">功能材料</span>
+                                </div>
+
+                                <!-- 卷期页码或文章编号 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">卷期页码</span>
+
+                                    <span class="bibliography-value">55(5): 1363-1368</span>
+                                </div>
+
+                                <!-- DOI -->
+                                <div class="bibliography-item doi-item">
+                                    <span class="bibliography-label">DOI</span>
+
+                                    <span class="bibliography-value">
+                                        <a class="bibliography-link" href="https://doi.org/10.16581/j.cnki.issn1671-3206.2026.05.009" target="_blank" rel="noopener noreferrer">10.16581/j.cnki.issn1671-3206.2026.05.009</a>
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="achievement-record" data-achievement-record data-year="2025" data-type="paper">
+                        <!-- 左侧年份和成果类型 -->
+                        <div class="record-meta">
+                            <span class="record-year">2025</span>
+
+                            <span class="record-type">学术论文</span>
+                        </div>
+                        <!-- 右侧论文信息 -->
+                        <div class="record-content">
+                            <!-- 论文题目 -->
+                            <h3>二元共晶相变材料对沥青性能影响</h3>
+                            <!-- 题目下方显示的主要作者 -->
+                            <p class="record-author-line">马峰，庞萌，周礼</p>
+                            <!-- 论文详细信息 -->
+                            <div class="record-bibliography">
+                                <!-- 完整作者信息 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">作者</span>
+                                    <span class="bibliography-value">马峰，庞萌，周礼，傅珍，代佳胜</span>
+                                </div>
+                                <!-- 期刊名称 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">期刊</span>
+                                    <span class="bibliography-value">功能材料</span>
+                                </div>
+                                <!-- 卷期页码或文章编号 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">卷期页码</span>
+                                    <span class="bibliography-value">56(10): 10206-10212</span>
+                                </div>
+                                <!-- DOI -->
+                                <div class="bibliography-item doi-item">
+                                    <span class="bibliography-label">DOI</span>
+                                    <span class="bibliography-value">
+                                        <a class="bibliography-link" href="https://doi.org/10.3969/ji.ssn.1001-9731.2025.10.025" target="_blank" rel="noopener noreferrer">10.3969/ji.ssn.1001-9731.2025.10.025</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="achievement-record" data-achievement-record data-year="2025" data-type="paper">
+                        <!-- 左侧年份和成果类型 -->
+                        <div class="record-meta">
+                            <span class="record-year">2025</span>
+
+                            <span class="record-type">学术论文</span>
+                        </div>
+                        <!-- 右侧论文信息 -->
+                        <div class="record-content">
+                            <!-- 论文题目 -->
+                            <h3>温拌高黏沥青胶浆流变性能研究</h3>
+                            <!-- 题目下方显示的主要作者 -->
+                            <p class="record-author-line">马峰，马行远，李川</p>
+                            <!-- 论文详细信息 -->
+                            <div class="record-bibliography">
+                                <!-- 完整作者信息 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">作者</span>
+                                    <span class="bibliography-value">马峰，马行远，李川，董文豪，傅珍，杨宇锋，侯英杰，黄锐哲</span>
+                                </div>
+                                <!-- 期刊名称 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">期刊</span>
+                                    <span class="bibliography-value">功能材料</span>
+                                </div>
+                                <!-- 卷期页码或文章编号 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">卷期页码</span>
+                                    <span class="bibliography-value">56(08): 8199-8204</span>
+                                </div>
+                                <!-- DOI -->
+                                <div class="bibliography-item doi-item">
+                                    <span class="bibliography-label">DOI</span>
+                                    <span class="bibliography-value">
+                                        <a class="bibliography-link" href="https://doi.org/10.3969/ji.ssn.1001-9731.2025.08.027" target="_blank" rel="noopener noreferrer">10.3969/ji.ssn.1001-9731.2025.08.027</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="achievement-record" data-achievement-record data-year="2026" data-type="paper">
+                        <!-- 左侧年份和成果类型 -->
+                        <div class="record-meta">
+                            <span class="record-year">2026</span>
+
+                            <span class="record-type">学术论文</span>
+                        </div>
+                        <!-- 右侧论文信息 -->
+                        <div class="record-content">
+                            <!-- 论文题目 -->
+                            <h3>废旧聚乙烯蜡温拌再生沥青混合料性能优化与评价</h3>
+                            <!-- 题目下方显示的主要作者 -->
+                            <p class="record-author-line">马峰，黄锐哲，傅珍</p>
+                            <!-- 论文详细信息 -->
+                            <div class="record-bibliography">
+                                <!-- 完整作者信息 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">作者</span>
+                                    <span class="bibliography-value">马峰，黄锐哲，傅珍，史柯，金彦鑫</span>
+                                </div>
+                                <!-- 期刊名称 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">期刊</span>
+                                    <span class="bibliography-value">吉林大学学报(工学版)</span>
+                                </div>
+                                <!-- 卷期页码或文章编号 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">卷期页码</span>
+                                    <span class="bibliography-value">56(06): 1520-1529</span>
+                                </div>
+                                <!-- DOI -->
+                                <div class="bibliography-item doi-item">
+                                    <span class="bibliography-label">DOI</span>
+                                    <span class="bibliography-value">
+                                        <a class="bibliography-link" href="https://doi.org/	10.13229/j.cnki.jdxbgxb.20241176" target="_blank" rel="noopener noreferrer">10.3969/ji.ssn.1001-9731.2025.08.027</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="achievement-record" data-achievement-record data-year="2025" data-type="paper">
+                        <!-- 左侧年份和成果类型 -->
+                        <div class="record-meta">
+                            <span class="record-year">2025</span>
+
+                            <span class="record-type">学术论文</span>
+                        </div>
+                        <!-- 右侧论文信息 -->
+                        <div class="record-content">
+                            <!-- 论文题目 -->
+                            <h3>废机油对老化SBS改性沥青流变特性再生效果研究</h3>
+                            <!-- 题目下方显示的主要作者 -->
+                            <p class="record-author-line">马峰，靖峥，董文豪</p>
+                            <!-- 论文详细信息 -->
+                            <div class="record-bibliography">
+                                <!-- 完整作者信息 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">作者</span>
+                                    <span class="bibliography-value">马峰，靖峥，董文豪，傅珍，郭兴隆，史柯</span>
+                                </div>
+                                <!-- 期刊名称 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">期刊</span>
+                                    <span class="bibliography-value">应用化工</span>
+                                </div>
+                                <!-- 卷期页码或文章编号 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">卷期页码</span>
+                                    <span class="bibliography-value">54(03): 567-572</span>
+                                </div>
+                                <!-- DOI -->
+                                <div class="bibliography-item doi-item">
+                                    <span class="bibliography-label">DOI</span>
+                                    <span class="bibliography-value">
+                                        <a class="bibliography-link" href="https://doi.org/10.16581/j.cnki.issn1671-3206.20250226.001" target="_blank" rel="noopener noreferrer">10.3969/ji.ssn.1001-9731.2025.08.027</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="achievement-record" data-achievement-record data-year="2025" data-type="paper">
+                        <!-- 左侧年份和成果类型 -->
+                        <div class="record-meta">
+                            <span class="record-year">2025</span>
+
+                            <span class="record-type">学术论文</span>
+                        </div>
+                        <!-- 右侧论文信息 -->
+                        <div class="record-content">
+                            <!-- 论文题目 -->
+                            <h3>石蜡微胶囊调温沥青及混合料性能</h3>
+                            <!-- 题目下方显示的主要作者 -->
+                            <p class="record-author-line">傅珍，王化云，侯英杰</p>
+                            <!-- 论文详细信息 -->
+                            <div class="record-bibliography">
+                                <!-- 完整作者信息 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">作者</span>
+                                    <span class="bibliography-value">傅珍，王化云，侯英杰，马峰，袁康博</span>
+                                </div>
+                                <!-- 期刊名称 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">期刊</span>
+                                    <span class="bibliography-value">长安大学学报(自然科学版)</span>
+                                </div>
+                                <!-- 卷期页码或文章编号 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">卷期页码</span>
+                                    <span class="bibliography-value">45(01):1-12</span>
+                                </div>
+                                <!-- DOI -->
+                                <div class="bibliography-item doi-item">
+                                    <span class="bibliography-label">DOI</span>
+                                    <span class="bibliography-value">
+                                        <a class="bibliography-link" href="https://doi.org/10.19721/j.cnki.1671-8879.2025.01.001" target="_blank" rel="noopener noreferrer">10.3969/ji.ssn.1001-9731.2025.08.027</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="achievement-record" data-achievement-record data-year="2025" data-type="paper">
+                        <!-- 左侧年份和成果类型 -->
+                        <div class="record-meta">
+                            <span class="record-year">2025</span>
+
+                            <span class="record-type">学术论文</span>
+                        </div>
+                        <!-- 右侧论文信息 -->
+                        <div class="record-content">
+                            <!-- 论文题目 -->
+                            <h3>SBS/C5树脂复配改性沥青流变性能</h3>
+                            <!-- 题目下方显示的主要作者 -->
+                            <p class="record-author-line">马峰，王宇行，史柯</p>
+                            <!-- 论文详细信息 -->
+                            <div class="record-bibliography">
+                                <!-- 完整作者信息 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">作者</span>
+                                    <span class="bibliography-value">马峰，王宇行，史柯，傅珍，石天鑫</span>
+                                </div>
+                                <!-- 期刊名称 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">期刊</span>
+                                    <span class="bibliography-value">应用化工</span>
+                                </div>
+                                <!-- 卷期页码或文章编号 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">卷期页码</span>
+                                    <span class="bibliography-value">54(02): 271-276</span>
+                                </div>
+                                <!-- DOI -->
+                                <div class="bibliography-item doi-item">
+                                    <span class="bibliography-label">DOI</span>
+                                    <span class="bibliography-value">
+                                        <a class="bibliography-link" href="https://doi.org/10.16581/j.cnki.issn1671-3206.20250123.011" target="_blank" rel="noopener noreferrer">10.3969/ji.ssn.1001-9731.2025.08.027</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="achievement-record" data-achievement-record data-year="2024" data-type="paper">
+                        <!-- 左侧年份和成果类型 -->
+                        <div class="record-meta">
+                            <span class="record-year">2024</span>
+
+                            <span class="record-type">学术论文</span>
+                        </div>
+                        <!-- 右侧论文信息 -->
+                        <div class="record-content">
+                            <!-- 论文题目 -->
+                            <h3>废机油复配再生SBS改性沥青及混合料性能研究</h3>
+                            <!-- 题目下方显示的主要作者 -->
+                            <p class="record-author-line">马峰，司少锋，温雅噜</p>
+                            <!-- 论文详细信息 -->
+                            <div class="record-bibliography">
+                                <!-- 完整作者信息 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">作者</span>
+                                    <span class="bibliography-value">马峰，司少锋，温雅噜，傅珍，郭兴隆</span>
+                                </div>
+                                <!-- 期刊名称 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">期刊</span>
+                                    <span class="bibliography-value">应用化工</span>
+                                </div>
+                                <!-- 卷期页码或文章编号 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">卷期页码</span>
+                                    <span class="bibliography-value">54(01): 39-43+49</span>
+                                </div>
+                                <!-- DOI -->
+                                <div class="bibliography-item doi-item">
+                                    <span class="bibliography-label">DOI</span>
+                                    <span class="bibliography-value">
+                                        <a class="bibliography-link" href="https://doi.org/10.16581/j.cnki.issn1671-3206.20241219.006" target="_blank" rel="noopener noreferrer">10.3969/ji.ssn.1001-9731.2025.08.027</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="achievement-record" data-achievement-record data-year="2024" data-type="paper">
+                        <!-- 左侧年份和成果类型 -->
+                        <div class="record-meta">
+                            <span class="record-year">2024</span>
+
+                            <span class="record-type">学术论文</span>
+                        </div>
+                        <!-- 右侧论文信息 -->
+                        <div class="record-content">
+                            <!-- 论文题目 -->
+                            <h3>聚乙烯蜡温拌再生沥青性能研究</h3>
+                            <!-- 题目下方显示的主要作者 -->
+                            <p class="record-author-line">马峰，黄锐哲，王昊宇</p>
+                            <!-- 论文详细信息 -->
+                            <div class="record-bibliography">
+                                <!-- 完整作者信息 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">作者</span>
+                                    <span class="bibliography-value">马峰，黄锐哲，王昊宇，史柯，傅珍，金彦鑫</span>
+                                </div>
+                                <!-- 期刊名称 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">期刊</span>
+                                    <span class="bibliography-value">功能材料</span>
+                                </div>
+                                <!-- 卷期页码或文章编号 -->
+                                <div class="bibliography-item">
+                                    <span class="bibliography-label">卷期页码</span>
+                                    <span class="bibliography-value">55(09): 9199-9204+9228</span>
+                                </div>
+                                <!-- DOI -->
+                                <div class="bibliography-item doi-item">
+                                    <span class="bibliography-label">DOI</span>
+                                    <span class="bibliography-value">
+                                        <a class="bibliography-link" href="https://doi.org/10.3969/ji.ssn.1001-9731.2024.09.025" target="_blank" rel="noopener noreferrer">10.3969/ji.ssn.1001-9731.2025.08.027</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+
+                    <!-- ===== 成果条目：编辑到这里结束 ===== -->
+
+                </div>
+
+                <!-- 没有符合条件的成果 -->
+                <div class="results-empty" data-results-empty hidden>
+                    <span class="results-empty-code">NO MATCHING RECORDS</span>
+
+                    <h3 data-empty-title>没有符合条件的成果</h3>
+
+                    <p data-empty-description>可以减少筛选条件或清除筛选后重新查看。</p>
+                </div>
+
+            </section>
+        </div>
+
+        <!-- 合作区域 -->
+        <section class="cta-section publications-cta">
+
+            <div>
+                <span class="eyebrow light">Collaboration</span>
+
+                <h2>以开放合作推动研究落地</h2>
+
+                <p>欢迎高校、科研院所与行业伙伴围绕相关方向开展交流合作。</p>
+            </div>
+
+            <a class="btn btn-primary" href="contact.html">发起交流</a>
+
+        </section>
+
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+
+        <div class="footer-inner">
+
+            <div class="footer-brand">
+                <span class="logo-mark small">M</span>
+
+                <div>
+                    <strong>长安大学 Mark课题组</strong>
+
+                    <span>公路学院 · 道路工程材料与绿色交通基础设施研究</span>
+                </div>
+            </div>
+
+            <div class="footer-meta">
+                <span>西安 · 长安大学</span>
+                <span>mafeng@chd.edu.cn</span>
+
+                <span>
+                    ©
+                    <b data-current-year>2026</b>
+                    Mark Research Group
+                </span>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- 返回顶部 -->
+    <button class="back-to-top" type="button" aria-label="返回页面顶部">
+        <svg class="back-top-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 14l5-5 5 5"></path>
+        </svg>
+    </button>
+
+    <!-- 科研成果筛选脚本 -->
+    <script src="JS/publications.js"></script>
+
+</body>
+</html>

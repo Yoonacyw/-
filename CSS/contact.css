@@ -1,0 +1,23 @@
+/* 联系页面专用样式 */
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    display: grid;
+    place-items: center;
+    color: #506371;
+    background: #f5f8f9;
+    font-family:
+"Microsoft YaHei",
+"Noto Sans SC",
+sans-serif;
+}
+
+p {
+    padding: 24px;
+    text-align: center;
+}
+
+a {
+    color: #1b5d86;
+}

@@ -1,0 +1,1086 @@
+/* 科研成果页面专用样式 */
+
+/* =========================================================
+   01. 页面变量与基础设置
+========================================================= */
+
+.publications-page {
+    --output-navy: #071b2f;
+    --output-navy-light: #123754;
+    --output-blue: #1b5d86;
+    --output-cyan: #35aeb8;
+    --output-cyan-light: #e2f4f4;
+    --output-text: #506371;
+    --output-muted: #758896;
+    --output-line: #dbe5e9;
+    --output-line-dark: #c4d3da;
+    --output-surface: #f5f8f9;
+    --output-white: #ffffff;
+    --output-shadow:
+        0 16px 42px rgba(7, 27, 47, 0.07);
+    --output-radius-large: 20px;
+    --output-radius-medium: 14px;
+    --output-radius-small: 8px;
+}
+
+.publications-page [hidden] {
+    display: none !important;
+}
+
+.publications-page main {
+    overflow: visible;
+}
+
+.publications-page button,
+.publications-page input,
+.publications-page a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* =========================================================
+   02. 页面首屏
+========================================================= */
+
+.publications-page .publications-header {
+    min-height: clamp(350px, 47vw, 520px);
+    display: flex;
+    align-items: flex-end;
+    background-position: center;
+}
+
+.publications-page .publications-header > div {
+    width: min(1180px, calc(100% - 48px));
+    margin: 0 auto;
+    padding-bottom: clamp(56px, 8vw, 90px);
+}
+
+.publications-page .publications-header p {
+    max-width: 860px;
+    margin-top: 20px;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: clamp(17px, 1.65vw, 21px);
+    line-height: 1.85;
+}
+
+/* =========================================================
+   03. 成果分类概览
+========================================================= */
+
+.publications-page .output-overview {
+    width: min(1180px, calc(100% - 48px));
+    margin: clamp(74px, 8vw, 108px) auto;
+}
+
+.publications-page .output-heading {
+    margin-bottom: 38px;
+    padding-bottom: 27px;
+    display: grid;
+    grid-template-columns:
+        minmax(260px, 0.8fr)
+        minmax(400px, 1.2fr);
+    gap: clamp(38px, 6vw, 72px);
+    align-items: end;
+    border-bottom: 1px solid var(--output-line);
+}
+
+.publications-page .output-heading .eyebrow {
+    display: block;
+    margin-bottom: 11px;
+}
+
+.publications-page .output-heading h2 {
+    margin: 0;
+    color: var(--output-navy);
+    font-family:
+        Georgia,
+        "Noto Serif SC",
+        "Source Han Serif SC",
+        serif;
+    font-size: clamp(37px, 4.5vw, 56px);
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.publications-page .output-heading > p {
+    max-width: 680px;
+    margin: 0;
+    padding-left: 29px;
+    justify-self: end;
+    color: var(--output-text);
+    border-left: 1px solid #c7d5db;
+    font-size: 15px !important;
+    line-height: 1.95;
+}
+
+.publications-page .output-stats {
+    display: grid;
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+    gap: 13px;
+}
+
+.publications-page .output-stat-card {
+    position: relative;
+    min-height: 155px;
+    padding: 24px 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    background: var(--output-surface);
+    border: 1px solid var(--output-line);
+    border-radius: 12px;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.publications-page .output-stat-card:hover {
+    background: var(--output-white);
+    border-color: #bed7de;
+    transform: translateY(-3px);
+}
+
+.publications-page .output-stat-code {
+    color: var(--output-blue);
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+}
+
+.publications-page .output-stat-content {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.publications-page .output-stat-name {
+    max-width: 150px;
+    color: var(--output-navy);
+    font-size: 15px;
+    font-weight: 750;
+    line-height: 1.6;
+}
+
+.publications-page .output-stat-number {
+    color: var(--output-cyan);
+    font-family:
+        "Times New Roman",
+        Times,
+        serif;
+    font-size: 34px;
+    font-weight: 600;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+/* =========================================================
+   04. 知网式筛选布局
+========================================================= */
+
+.publications-page .publications-layout {
+    width: min(1380px, calc(100% - 32px));
+    margin: clamp(76px, 8vw, 110px) auto;
+    display: grid;
+    grid-template-columns: 235px minmax(0, 1fr);
+    gap: 36px;
+    align-items: start;
+}
+
+/* =========================================================
+   05. 左侧分面筛选
+========================================================= */
+
+.publications-page .facet-sidebar {
+    position: sticky;
+    top: 94px;
+    z-index: 25;
+}
+
+.publications-page .facet-panel {
+    overflow: hidden;
+    background: var(--output-white);
+    border: 1px solid var(--output-line);
+    border-radius: var(--output-radius-medium);
+    box-shadow: var(--output-shadow);
+}
+
+.publications-page .facet-panel-header {
+    min-height: 64px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    color: #ffffff;
+    background: var(--output-navy);
+}
+
+.publications-page .facet-panel-header h2 {
+    margin: 0;
+    color: #ffffff;
+    font-family:
+        "Noto Sans SC",
+        "Microsoft YaHei",
+        sans-serif;
+    font-size: 17px;
+    font-weight: 750;
+    letter-spacing: 0.02em;
+}
+
+.publications-page .facet-reset-button {
+    padding: 6px 9px;
+    color: rgba(255, 255, 255, 0.72);
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 11px;
+    cursor: pointer;
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.publications-page .facet-reset-button:hover,
+.publications-page .facet-reset-button:focus-visible {
+    color: var(--output-navy);
+    background: #ffffff;
+    border-color: #ffffff;
+}
+
+.publications-page .facet-reset-button:disabled {
+    opacity: 0.42;
+    cursor: default;
+}
+
+.publications-page .facet-group {
+    padding: 20px 17px 18px;
+}
+
+.publications-page .facet-group +
+.facet-group {
+    border-top: 1px solid var(--output-line);
+}
+
+.publications-page .facet-group-heading {
+    margin-bottom: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.publications-page .facet-group-heading h3 {
+    margin: 0;
+    color: var(--output-navy);
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.publications-page .facet-group-heading span {
+    color: var(--output-muted);
+    font-size: 10px;
+}
+
+.publications-page .facet-options {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 3px;
+    list-style: none;
+}
+
+.publications-page .facet-option {
+    position: relative;
+}
+
+.publications-page .facet-option label {
+    min-height: 41px;
+    padding: 7px 8px;
+    display: grid;
+    grid-template-columns:
+        18px minmax(0, 1fr) auto;
+    gap: 9px;
+    align-items: center;
+    color: var(--output-text);
+    border-radius: 6px;
+    cursor: pointer;
+    transition:
+        color 0.2s ease,
+        background 0.2s ease;
+}
+
+.publications-page .facet-option label:hover {
+    color: var(--output-navy);
+    background: var(--output-surface);
+}
+
+.publications-page .facet-option input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.publications-page .facet-checkbox {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    display: block;
+    background: #ffffff;
+    border: 1px solid #b9c9d1;
+    border-radius: 3px;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.publications-page .facet-checkbox::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 1px;
+    width: 5px;
+    height: 9px;
+    border-right: 2px solid #ffffff;
+    border-bottom: 2px solid #ffffff;
+    opacity: 0;
+    transform: rotate(42deg);
+}
+
+.publications-page
+.facet-option
+input:checked +
+.facet-checkbox {
+    background: var(--output-cyan);
+    border-color: var(--output-cyan);
+}
+
+.publications-page
+.facet-option
+input:checked +
+.facet-checkbox::after {
+    opacity: 1;
+}
+
+.publications-page
+.facet-option
+input:focus-visible +
+.facet-checkbox {
+    outline: 3px solid rgba(53, 174, 184, 0.2);
+    outline-offset: 2px;
+}
+
+.publications-page .facet-option-name {
+    min-width: 0;
+    font-size: 12px;
+    font-weight: 650;
+    line-height: 1.55;
+}
+
+.publications-page .facet-year-number {
+    font-family:
+        "Times New Roman",
+        Times,
+        serif;
+    font-size: 16px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.publications-page .facet-year-unit {
+    margin-left: 3px;
+    color: var(--output-muted);
+    font-size: 11px;
+}
+
+.publications-page .facet-option-count {
+    min-width: 27px;
+    padding: 3px 6px;
+    color: var(--output-muted);
+    background: #eef3f5;
+    border-radius: 999px;
+    font-family:
+        "Times New Roman",
+        Times,
+        serif;
+    font-size: 11px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+}
+
+.publications-page .facet-option.is-disabled {
+    opacity: 0.45;
+}
+
+.publications-page .facet-option.is-disabled label {
+    cursor: default;
+}
+
+.publications-page .facet-help {
+    margin: 0;
+    padding: 15px 18px 17px;
+    color: var(--output-muted);
+    background: var(--output-surface);
+    border-top: 1px solid var(--output-line);
+    font-size: 10px !important;
+    line-height: 1.7;
+}
+
+/* =========================================================
+   06. 结果工具栏
+========================================================= */
+
+.publications-page .publication-results {
+    min-width: 0;
+}
+
+.publications-page .results-toolbar {
+    min-height: 65px;
+    padding: 13px 17px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+    background: var(--output-surface);
+    border: 1px solid var(--output-line);
+    border-radius: 11px;
+}
+
+.publications-page .results-summary {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.publications-page .results-summary strong {
+    color: var(--output-navy);
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.publications-page .results-summary span {
+    color: var(--output-muted);
+    font-size: 12px;
+}
+
+.publications-page .results-count-number {
+    color: var(--output-blue);
+    font-family:
+        "Times New Roman",
+        Times,
+        serif;
+    font-size: 18px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.publications-page .results-status {
+    color: var(--output-muted);
+    font-size: 11px;
+}
+
+/* 当前筛选条件 */
+.publications-page .active-filters {
+    margin: 14px 0 27px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.publications-page .active-filter-label {
+    color: var(--output-muted);
+    font-size: 11px;
+}
+
+.publications-page .active-filter-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.publications-page .active-filter-chip {
+    min-height: 29px;
+    padding: 5px 9px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--output-navy-light);
+    background: var(--output-cyan-light);
+    border: 1px solid #c9e8e9;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.publications-page .active-filter-chip:hover {
+    background: #d5eeee;
+}
+
+.publications-page .active-filter-remove {
+    color: #55717e;
+    font-size: 14px;
+    line-height: 1;
+}
+
+/* =========================================================
+   07. 成果记录卡片
+========================================================= */
+
+.publications-page .achievement-results-list {
+    margin-top: 27px;
+    display: grid;
+    gap: 17px;
+}
+
+.publications-page .achievement-record {
+    padding: 27px 30px;
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: 26px;
+    background: var(--output-white);
+    border: 1px solid var(--output-line);
+    border-radius: var(--output-radius-medium);
+    box-shadow:
+        0 13px 36px rgba(7, 27, 47, 0.055);
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.publications-page .achievement-record:hover {
+    border-color: #bdd6dd;
+    box-shadow:
+        0 18px 44px rgba(7, 27, 47, 0.09);
+    transform: translateY(-2px);
+}
+
+/* 左侧年份和成果类型 */
+.publications-page .record-meta {
+    padding-right: 20px;
+    border-right: 1px solid var(--output-line);
+}
+
+.publications-page .record-year {
+    display: block;
+    color: var(--output-navy);
+    font-family:
+        "Times New Roman",
+        Times,
+        serif;
+    font-size: 38px;
+    font-weight: 600;
+    line-height: 1;
+    font-variant-numeric:
+        lining-nums tabular-nums;
+}
+
+/* 所有成果类型标签统一放大 */
+.publications-page .record-type {
+    margin-top: 22px;
+    padding: 7px 11px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--output-blue);
+    background: var(--output-cyan-light);
+    border: 1px solid #c5e5e7;
+    border-radius: 6px;
+    font-size: 14px !important;
+    font-weight: 750;
+    line-height: 1.45;
+    letter-spacing: 0.02em;
+}
+
+/* 右侧成果内容 */
+.publications-page .record-content {
+    min-width: 0;
+}
+
+.publications-page .record-content h3 {
+    margin: 0 0 14px;
+    color: var(--output-navy);
+    font-family:
+        "Noto Sans SC",
+        "Microsoft YaHei",
+        Arial,
+        sans-serif;
+    font-size: clamp(20px, 1.75vw, 25px);
+    font-weight: 720;
+    line-height: 1.48;
+    letter-spacing: 0;
+}
+
+.publications-page .record-author-line {
+    margin: 0;
+    color: #526979;
+    font-size: 14px !important;
+    font-weight: 600;
+    line-height: 1.7;
+}
+
+/* =========================================================
+   08. 作者、期刊、卷期页码、DOI排版
+========================================================= */
+
+.publications-page .record-bibliography {
+    margin-top: 22px;
+    padding-top: 17px;
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    gap: 12px 26px;
+    border-top: 1px solid var(--output-line);
+}
+
+/*
+ * 字段内部使用弹性排列。
+ * 不再固定预留78px，因此冒号后不会出现过大空白。
+ */
+.publications-page .bibliography-item {
+    min-width: 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+}
+
+.publications-page .bibliography-label {
+    flex: 0 0 auto;
+    color: #526979;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.7;
+    white-space: nowrap;
+}
+
+.publications-page .bibliography-label::after {
+    content: "：";
+}
+
+.publications-page .bibliography-value {
+    min-width: 0;
+    flex: 1;
+    color: #728594;
+    font-size: 13px;
+    font-weight: 450;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+/* DOI链接 */
+.publications-page .bibliography-link {
+    color: var(--output-blue);
+    text-decoration: none;
+    border-bottom:
+        1px solid rgba(27, 93, 134, 0.3);
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.publications-page .bibliography-link:hover,
+.publications-page .bibliography-link:focus-visible {
+    color: var(--output-cyan);
+    border-bottom-color: var(--output-cyan);
+}
+
+/* 去掉公共样式可能生成的外链图标 */
+.publications-page
+.bibliography-item.doi-item
+.bibliography-value {
+    white-space: nowrap;
+}
+.publications-page
+.bibliography-item.doi-item
+.bibliography-value {
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.publications-page
+.bibliography-item.doi-item
+.bibliography-link {
+    max-width: 100%;
+    display: inline;
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+/* =========================================================
+   09. 空结果
+========================================================= */
+
+.publications-page .results-empty {
+    margin-top: 27px;
+    padding: clamp(40px, 7vw, 72px) 28px;
+    color: var(--output-text);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(53, 174, 184, 0.045),
+            rgba(255, 255, 255, 0)
+        ),
+        var(--output-surface);
+    border: 1px dashed #c4d5dc;
+    border-radius: var(--output-radius-medium);
+    text-align: center;
+}
+
+.publications-page .results-empty-code {
+    display: block;
+    margin-bottom: 13px;
+    color: var(--output-blue);
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+}
+
+.publications-page .results-empty h3 {
+    margin: 0 0 10px;
+    color: var(--output-navy);
+    font-size: 22px;
+}
+
+.publications-page .results-empty p {
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 14px !important;
+    line-height: 1.85;
+}
+
+/* =========================================================
+   10. 底部联系区域
+========================================================= */
+
+.publications-page .publications-cta {
+    width: min(1180px, calc(100% - 48px));
+    margin: clamp(80px, 9vw, 118px) auto;
+}
+
+.publications-page .publications-cta > div {
+    max-width: 760px;
+}
+
+.publications-page .publications-cta .btn {
+    min-width: 145px;
+    justify-content: center;
+}
+
+/* =========================================================
+   11. 返回顶部
+========================================================= */
+
+.publications-page .back-to-top {
+    width: auto;
+    min-width: 58px;
+    height: 40px;
+    padding: 0 17px;
+    right: 22px;
+    bottom: 22px;
+    color: #ffffff;
+    background: rgba(7, 27, 47, 0.95);
+    border:
+        1px solid rgba(116, 231, 238, 0.36);
+    border-radius: 999px;
+    font-family:
+        "Microsoft YaHei",
+        "Noto Sans SC",
+        sans-serif;
+    font-size: 12px;
+    font-weight: 750;
+    letter-spacing: 0.06em;
+    box-shadow:
+        0 11px 28px rgba(7, 27, 47, 0.22);
+}
+
+.publications-page .back-to-top:hover,
+.publications-page .back-to-top:focus-visible {
+    color: var(--output-navy);
+    background: #ffffff;
+    border-color: #b8dadd;
+}
+
+.publications-page [data-current-year] {
+    font-family:
+        "Times New Roman",
+        Times,
+        serif !important;
+    font-variant-numeric: tabular-nums;
+}
+
+/* =========================================================
+   12. 中等屏幕
+========================================================= */
+
+@media (max-width: 1100px) {
+    .publications-page .publications-layout {
+        grid-template-columns:
+            235px minmax(0, 1fr);
+        gap: 32px;
+    }
+
+    .publications-page .achievement-record {
+        grid-template-columns:
+            125px minmax(0, 1fr);
+        gap: 28px;
+    }
+
+    .publications-page .record-meta {
+        padding-right: 22px;
+    }
+
+    .publications-page .record-bibliography {
+        grid-template-columns: 1fr;
+        gap: 11px;
+    }
+
+    .publications-page
+    .bibliography-item.doi-item
+    .bibliography-value {
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+}
+
+/* =========================================================
+   13. 平板屏幕
+========================================================= */
+
+@media (max-width: 800px) {
+    .publications-page .publications-header > div,
+    .publications-page .output-overview,
+    .publications-page .publications-layout,
+    .publications-page .publications-cta {
+        width: calc(100% - 30px);
+    }
+
+    .publications-page .output-heading {
+        grid-template-columns: 1fr;
+        gap: 17px;
+        align-items: start;
+    }
+
+    .publications-page .output-heading > p {
+        max-width: 720px;
+        padding-left: 0;
+        justify-self: start;
+        border-left: 0;
+    }
+
+    .publications-page .output-stats {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .publications-page .publications-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .publications-page .facet-sidebar {
+        position: static;
+    }
+
+    .publications-page .facet-panel-body {
+        display: grid;
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .publications-page .facet-group +
+    .facet-group {
+        border-top: 0;
+        border-left: 1px solid var(--output-line);
+    }
+
+    .publications-page .facet-help {
+        grid-column: 1 / -1;
+    }
+}
+
+/* =========================================================
+   14. 手机屏幕
+========================================================= */
+
+@media (max-width: 560px) {
+    .publications-page .publications-header {
+        min-height: 400px;
+    }
+
+    .publications-page .publications-header > div {
+        width: calc(100% - 28px);
+        padding-bottom: 48px;
+    }
+
+    .publications-page .publications-header p {
+        font-size: 16px;
+        line-height: 1.8;
+    }
+
+    .publications-page .output-overview,
+    .publications-page .publications-layout,
+    .publications-page .publications-cta {
+        width: calc(100% - 28px);
+    }
+
+    .publications-page .output-heading h2 {
+        font-size: 34px;
+    }
+
+    .publications-page .output-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .publications-page .output-stat-card {
+        min-height: 120px;
+    }
+
+    .publications-page .facet-panel-body {
+        grid-template-columns: 1fr;
+    }
+
+    .publications-page .facet-group +
+    .facet-group {
+        border-top: 1px solid var(--output-line);
+        border-left: 0;
+    }
+
+    .publications-page .results-toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .publications-page .achievement-record {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 23px;
+    }
+
+    .publications-page .record-meta {
+        padding: 0 0 18px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        border-right: 0;
+        border-bottom:
+            1px solid var(--output-line);
+    }
+
+    .publications-page .record-year {
+        font-size: 37px;
+    }
+
+    .publications-page .record-type {
+        margin-top: 0;
+        font-size: 13px !important;
+    }
+
+    .publications-page .record-content h3 {
+        font-size: 21px;
+    }
+
+    .publications-page .record-author-line {
+        font-size: 14px !important;
+    }
+
+    .publications-page .record-bibliography {
+        margin-top: 20px;
+        padding-top: 17px;
+    }
+
+    .publications-page .bibliography-label,
+    .publications-page .bibliography-value {
+        font-size: 13px;
+    }
+
+    .publications-page .publications-cta {
+        padding: 34px 24px;
+    }
+
+    .publications-page .publications-cta .btn {
+        width: 100%;
+    }
+
+    .publications-page .back-to-top {
+        min-width: 54px;
+        height: 38px;
+        right: 14px;
+        bottom: 14px;
+        padding: 0 14px;
+    }
+}
+/* DOI字段改为基线对齐 */
+.publications-page .bibliography-item.doi-item {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+}
+
+/* DOI标签和值使用完全相同的行高 */
+.publications-page
+.bibliography-item.doi-item
+.bibliography-label,
+.publications-page
+.bibliography-item.doi-item
+.bibliography-value,
+.publications-page
+.bibliography-item.doi-item
+.bibliography-link {
+    margin: 0;
+    padding: 0;
+    line-height: 1.7;
+    vertical-align: baseline;
+}
+
+/* DOI内容区域 */
+.publications-page
+.bibliography-item.doi-item
+.bibliography-value {
+    min-width: 0;
+    display: block;
+    flex: 1;
+}
+
+/* DOI链接 */
+.publications-page
+.bibliography-item.doi-item
+.bibliography-link {
+    display: inline;
+    font-size: 13px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+/* 强制删除链接后面的自动图标 */
+.publications-page
+.bibliography-item.doi-item
+.bibliography-link::before,
+.publications-page
+.bibliography-item.doi-item
+.bibliography-link::after,
+.publications-page
+.bibliography-item.doi-item
+a[target="_blank"]::after {
+    content: none !important;
+    display: none !important;
+}

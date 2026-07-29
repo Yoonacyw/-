@@ -1,0 +1,71 @@
+/* 学术动态页面专用样式 */
+
+/* News 卡片分类与日期 */
+.news-page .news-date {
+    font-size: 12px;
+}
+
+/* News 卡片图片 */
+.news-page .news-card-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin: 0 0 22px;
+    display: block;
+    object-fit: cover;
+    background: #edf5f8;
+    border-radius: 6px;
+}
+
+/* 删除学术动态页面的装饰箭头 */
+.news-page .text-link::before,
+.news-page .text-link::after,
+.news-page .btn::before,
+.news-page .btn::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* 返回顶部统一改成文字胶囊按钮 */
+.news-page .back-to-top {
+    box-sizing: border-box;
+
+    width: 58px !important;
+    min-width: 58px !important;
+    max-width: 58px !important;
+
+    height: 40px !important;
+    min-height: 40px !important;
+
+    padding: 0 !important;
+
+    right: 22px;
+    bottom: 22px;
+
+    display: grid;
+    place-items: center;
+
+    color: #ffffff;
+    background: rgba(7, 27, 47, 0.95);
+    border: 1px solid rgba(116, 231, 238, 0.36);
+    border-radius: 999px !important;
+
+    box-shadow:
+        0 11px 28px rgba(7, 27, 47, 0.22);
+}
+
+.news-page .back-to-top:hover,
+.news-page .back-to-top:focus-visible {
+    color: #071b2f;
+    background: #ffffff;
+    border-color: #b8dadd;
+}
+
+@media (max-width: 560px) {
+    .news-page .back-to-top {
+        min-width: 54px;
+        height: 38px;
+        right: 14px;
+        bottom: 14px;
+        padding: 0 14px;
+    }
+}

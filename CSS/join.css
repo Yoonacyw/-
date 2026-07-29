@@ -1,0 +1,229 @@
+/* 联系我们页面专用样式 */
+
+/* =========================================================
+   加入与联系页面专用样式
+========================================================= */
+
+.join-page #contact,
+.join-page #collaboration {
+    scroll-margin-top: 105px;
+}
+
+/* 联系部分与上方保持合理距离 */
+.join-page .merged-collaboration-section {
+    margin-top: clamp(82px, 9vw, 120px);
+}
+
+.join-page .merged-contact-section {
+    margin-top: clamp(75px, 8vw, 105px);
+}
+
+/* 联系标题控制宽度 */
+.join-page .contact-lead h2 {
+    max-width: 680px;
+    line-height: 1.35;
+}
+
+/* 邮箱避免超出卡片 */
+.join-page .contact-row a,
+.join-page .application-contact a {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+/* 所有按钮不显示额外箭头 */
+.join-page .btn::before,
+.join-page .btn::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* 返回顶部统一改成文字胶囊按钮 */
+.join-page .back-to-top {
+    width: auto;
+    min-width: 58px;
+    height: 40px;
+    padding: 0 17px;
+    right: 22px;
+    bottom: 22px;
+    display: grid;
+    place-items: center;
+    color: #ffffff;
+    background: rgba(7, 27, 47, 0.95);
+    border: 1px solid rgba(116, 231, 238, 0.36);
+    border-radius: 999px;
+    font-family:
+        "Microsoft YaHei",
+        "Noto Sans SC",
+        sans-serif;
+    font-size: 12px;
+    font-weight: 750;
+    letter-spacing: 0.06em;
+    box-shadow:
+        0 11px 28px rgba(7, 27, 47, 0.22);
+}
+
+.join-page .back-to-top:hover,
+.join-page .back-to-top:focus-visible {
+    color: #071b2f;
+    background: #ffffff;
+    border-color: #b8dadd;
+}
+
+@media (max-width: 800px) {
+    .join-page .contact-main {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .join-page .back-to-top {
+        min-width: 54px;
+        height: 38px;
+        right: 14px;
+        bottom: 14px;
+        padding: 0 14px;
+    }
+}
+/* =========================================================
+   底部联系视觉区域重新排版
+========================================================= */
+
+.join-page .contact-visual {
+    width: min(1380px, calc(100% - 48px));
+    min-height: 410px;
+    margin: clamp(75px, 8vw, 105px) auto;
+    padding: clamp(48px, 5.5vw, 76px);
+
+    display: grid;
+    grid-template-columns:
+minmax(0, 780px)
+minmax(180px, 1fr);
+
+    gap: 50px;
+    align-items: end;
+
+    color: #ffffff;
+
+    background:
+linear-gradient(
+    90deg,
+    rgba(4, 17, 31, 0.96),
+    rgba(7, 27, 47, 0.64) 56%,
+    rgba(7, 27, 47, 0.34)
+),
+url("../images/campus/campus-night.jpg")
+center 54% / cover no-repeat;
+
+    border-radius: 28px;
+    overflow: hidden;
+}
+
+/* 左侧标题区域 */
+.join-page .contact-visual-content {
+    min-width: 0;
+    max-width: 780px;
+}
+
+/* 标题整体 */
+.join-page .contact-visual h2 {
+    max-width: none;
+    margin: 16px 0 0;
+    color: #ffffff;
+
+    font-family:
+Georgia,
+"Noto Serif SC",
+"Source Han Serif SC",
+serif;
+
+    font-size: clamp(38px, 3.7vw, 54px);
+    font-weight: 600;
+    line-height: 1.28;
+    letter-spacing: -0.025em;
+}
+
+/* 每一行单独显示 */
+.join-page .contact-title-line {
+    display: block;
+}
+
+/* 第一行适当缩小，形成层级 */
+.join-page .contact-title-line:first-child {
+    margin-bottom: 7px;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.72em;
+    letter-spacing: 0.02em;
+}
+
+/* 第二行保持完整，不随意断开 */
+.join-page .contact-title-line:last-child {
+    white-space: nowrap;
+}
+
+/* 右侧坐标信息 */
+.join-page .contact-coordinate {
+    justify-self: end;
+    align-self: end;
+
+    margin-bottom: 3px;
+    padding: 8px 12px;
+
+    color: #74e7ee;
+    background: rgba(7, 27, 47, 0.56);
+    border: 1px solid rgba(116, 231, 238, 0.26);
+    border-radius: 999px;
+
+    font-family:
+"Times New Roman",
+Arial,
+sans-serif;
+
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+}
+
+/* 平板端 */
+@media (max-width: 950px) {
+    .join-page .contact-visual {
+min-height: 390px;
+grid-template-columns: 1fr;
+gap: 32px;
+align-content: end;
+    }
+
+    .join-page .contact-coordinate {
+justify-self: start;
+    }
+
+    .join-page .contact-title-line:last-child {
+white-space: normal;
+    }
+}
+
+/* 手机端 */
+@media (max-width: 560px) {
+    .join-page .contact-visual {
+width: calc(100% - 28px);
+min-height: 380px;
+padding: 34px 24px;
+border-radius: 16px;
+    }
+
+    .join-page .contact-visual h2 {
+font-size: 34px;
+line-height: 1.35;
+    }
+
+    .join-page .contact-title-line:first-child {
+font-size: 0.74em;
+    }
+
+    .join-page .contact-coordinate {
+padding: 7px 10px;
+font-size: 10px;
+    }
+}
