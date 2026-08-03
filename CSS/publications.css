@@ -721,6 +721,104 @@ input:focus-visible +
     overflow-wrap: anywhere;
     word-break: break-word;
 }
+
+/* PDF 在线浏览与下载 */
+.publications-page .record-actions {
+    margin-top: 24px;
+    padding-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(158px, 188px));
+    gap: 14px 18px;
+    border-top: 1px solid var(--output-line);
+}
+
+.publications-page .record-file-button {
+    width: 100%;
+    min-height: 46px;
+    padding: 11px 17px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    border: 1px solid var(--output-blue);
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-decoration: none;
+    box-shadow: 0 6px 16px rgba(18, 61, 96, 0.1);
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.publications-page .record-file-button::before {
+    width: 22px;
+    height: 22px;
+    display: inline-grid;
+    flex: 0 0 22px;
+    place-items: center;
+    border-radius: 50%;
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.publications-page .record-file-button-primary {
+    color: #ffffff;
+    background:
+        linear-gradient(
+            135deg,
+            var(--output-blue),
+            var(--output-navy)
+        );
+    border-color: transparent;
+}
+
+.publications-page .record-file-button-primary::before {
+    content: "↗";
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.publications-page .record-file-button-primary:hover,
+.publications-page .record-file-button-primary:focus-visible {
+    color: #ffffff;
+    background: var(--output-navy);
+    border-color: var(--output-navy);
+    box-shadow: 0 9px 20px rgba(18, 61, 96, 0.2);
+    transform: translateY(-2px);
+}
+
+.publications-page .record-file-button-secondary {
+    color: #17697a;
+    background: #f4fbfc;
+    border-color: #8bc4cc;
+}
+
+.publications-page .record-file-button-secondary::before {
+    content: "↓";
+    color: #17697a;
+    background: rgba(53, 174, 184, 0.14);
+}
+
+.publications-page .record-file-button-secondary:hover,
+.publications-page .record-file-button-secondary:focus-visible {
+    color: #0e5665;
+    background: #e6f6f8;
+    border-color: #4a9fac;
+    box-shadow: 0 9px 20px rgba(23, 105, 122, 0.16);
+    transform: translateY(-2px);
+}
+
+.publications-page .record-file-button:focus-visible {
+    outline: 3px solid rgba(53, 174, 184, 0.28);
+    outline-offset: 3px;
+}
+
 /* =========================================================
    09. 空结果
 ========================================================= */
@@ -1010,6 +1108,11 @@ input:focus-visible +
     .publications-page .bibliography-label,
     .publications-page .bibliography-value {
         font-size: 13px;
+    }
+
+    .publications-page .record-actions {
+        grid-template-columns: 1fr;
+        gap: 11px;
     }
 
     .publications-page .publications-cta {
