@@ -15,6 +15,7 @@ import os
 import re
 import shutil
 import threading
+import unicodedata
 import uuid
 import webbrowser
 from datetime import datetime
@@ -35,6 +36,11 @@ except ImportError as exc:
         "缺少 pypdf。请在 PyCharm 当前解释器中安装 pypdf，"
         "或使用“启动成果管理器.bat”启动。"
     ) from exc
+
+try:
+    import pdfplumber
+except ImportError:
+    pdfplumber = None
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -515,6 +521,206 @@ def parse_author_names(raw_authors: str) -> list[str]:
     return formatted
 
 
+def normalize_cnki_line(value: str) -> str:
+    """统一知网 PDF 中的全角字符和异常空格。"""
+    value = unicodedata.normalize("NFKC", value or "")
+    value = value.replace("−", "-").replace("－", "-")
+    return re.sub(r"\s+", " ", value).strip()
+
+
+def cnki_chinese_authors(line: str) -> list[str]:
+    """从知网首页中文作者行提取全部作者。"""
+    compact = normalize_cnki_line(line)
+    parts = re.split(r"[,，]", compact)
+    authors: list[str] = []
+    for part in parts:
+        name = re.sub(r"[\d*†‡\s]+", "", part)
+        if re.fullmatch(r"[\u4e00-\u9fff·]{2,6}", name):
+            authors.append(name)
+    return authors if len(authors) >= 2 else []
+
+
+def cnki_english_authors(lines: list[str]) -> list[str]:
+    """优先使用知网首页英文作者行生成“姓, 名”格式。"""
+    for line in lines:
+        normalized = normalize_cnki_line(line)
+        candidates = re.split(r"[,，]", normalized)
+        parsed: list[str] = []
+        for candidate in candidates:
+            match = re.fullmatch(
+                r"\s*([A-Z]{2,})\s+([A-Za-z][A-Za-z-]*)\d*\s*",
+                candidate,
+            )
+            if match:
+                family, given = match.groups()
+                parsed.append(f"{family.title()}, {given.title()}")
+        if len(parsed) >= 2:
+            return parsed
+    return []
+
+
+def analyze_cnki_pdf(
+    pdf_bytes: bytes,
+    metadata: Any,
+    filename: str,
+) -> dict[str, Any] | None:
+    """按知网期刊首页版式提取题名、作者和完整书目信息。"""
+    metadata_text = " ".join(
+        normalize_metadata(metadata.get(key))
+        for key in ("/Author", "/Creator", "/Producer")
+    ).lower()
+    looks_like_cnki_metadata = any(
+        marker in metadata_text
+        for marker in ("cnki", "readerex", "ttkn")
+    )
+    if pdfplumber is None:
+        if looks_like_cnki_metadata:
+            raise ValueError(
+                "识别知网 PDF 需要 pdfplumber，请先安装后再上传"
+            )
+        return None
+
+    try:
+        with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
+            page_texts = [
+                page.extract_text(x_tolerance=2, y_tolerance=3) or ""
+                for page in pdf.pages
+            ]
+    except Exception as exc:
+        if looks_like_cnki_metadata:
+            raise ValueError("知网 PDF 版式文字提取失败") from exc
+        return None
+
+    first_text = page_texts[0] if page_texts else ""
+    normalized_first = normalize_cnki_line(first_text)
+    is_cnki = (
+        looks_like_cnki_metadata
+        or ".cnki." in normalized_first.lower()
+        or (
+            "中图分类号" in first_text
+            and "文章编号" in first_text
+        )
+    )
+    if not is_cnki:
+        return None
+
+    lines = [
+        normalize_cnki_line(line)
+        for line in first_text.splitlines()
+        if normalize_cnki_line(line)
+    ]
+    abstract_index = next(
+        (
+            index
+            for index, line in enumerate(lines)
+            if re.search(r"摘\s*要\s*[:：]", line)
+        ),
+        len(lines),
+    )
+
+    chinese_authors: list[str] = []
+    author_index = -1
+    for index, line in enumerate(lines[:abstract_index]):
+        names = cnki_chinese_authors(line)
+        if names:
+            chinese_authors = names
+            author_index = index
+            break
+
+    title = ""
+    if author_index > 0:
+        title_parts: list[str] = []
+        for line in reversed(lines[max(0, author_index - 3):author_index]):
+            compact = re.sub(r"\s+", "", line)
+            if re.search(r"DOI|Vol\.?|第\d+卷|\d{4}年", compact, re.I):
+                break
+            if len(re.findall(r"[\u4e00-\u9fff]", compact)) >= 6:
+                title_parts.insert(0, compact)
+            elif title_parts:
+                break
+        title = "".join(title_parts)
+
+    english_authors = cnki_english_authors(lines[:abstract_index + 15])
+    author_names = english_authors or chinese_authors
+
+    year = ""
+    volume = ""
+    issue = ""
+    journal = ""
+    for line in lines[:10]:
+        compact = re.sub(r"\s+", "", line)
+        volume_issue = re.search(r"第(\d+)卷第(\d+)期", compact)
+        if volume_issue:
+            volume, issue = volume_issue.groups()
+        year_match = re.search(r"((?:19|20)\d{2})年", compact)
+        if year_match:
+            year = year_match.group(1)
+        journal_match = re.search(
+            r"期\s*(.*?)\s*Vol\.?\s*\d+",
+            line,
+            flags=re.IGNORECASE,
+        )
+        if journal_match:
+            journal = re.sub(r"\s+", "", journal_match.group(1))
+
+    doi_match = DOI_PATTERN.search(first_text)
+    doi = doi_match.group(0).rstrip(".,;:)]}") if doi_match else ""
+
+    compact_all = re.sub(
+        r"\s+",
+        "",
+        normalize_cnki_line("\n".join(page_texts)),
+    )
+    page_text = ""
+    article_number = re.search(
+        r"文章编号[:：]?[\d-]+\((?:19|20)\d{2}\)\d+-(\d+)-(\d+)",
+        compact_all,
+    )
+    if article_number:
+        start_page = int(article_number.group(1))
+        page_count = int(article_number.group(2))
+        end_page = start_page + page_count - 1
+        page_text = f"{start_page}-{end_page}"
+        continuation = re.search(r"下转第(\d+)页", compact_all)
+        if continuation:
+            continuation_page = int(continuation.group(1))
+            if continuation_page > end_page:
+                page_text += f", {continuation_page}"
+
+    citation_parts = [
+        part
+        for part in (
+            f"{volume}({issue})" if volume and issue else volume,
+            f"({year})" if year else "",
+            page_text,
+        )
+        if part
+    ]
+
+    if not title or not author_names or not year:
+        raise ValueError(
+            f"{filename}：知网 PDF 的题名、作者或年份识别不完整"
+        )
+
+    return {
+        "type": "paper",
+        "year": year,
+        "title": title,
+        "authors": "; ".join(author_names),
+        "authorLine": "; ".join(author_names[:3]),
+        "journal": journal,
+        "citation": " ".join(citation_parts),
+        "doi": doi,
+        "pages": len(page_texts),
+        "originalFilename": filename,
+        "textPreview": "\n".join(lines[:24]),
+        "_detectedTitle": True,
+        "_detectedAuthors": True,
+        "_detectedYear": True,
+        "_source": "cnki",
+    }
+
+
 def analyze_pdf(pdf_bytes: bytes, filename: str) -> dict[str, Any]:
     if not pdf_bytes.startswith(b"%PDF"):
         raise ValueError("所选文件不是有效的 PDF")
@@ -531,6 +737,10 @@ def analyze_pdf(pdf_bytes: bytes, filename: str) -> dict[str, Any]:
             raise ValueError("暂不支持有密码的 PDF") from exc
 
     metadata = reader.metadata or {}
+    cnki_result = analyze_cnki_pdf(pdf_bytes, metadata, filename)
+    if cnki_result:
+        return cnki_result
+
     page_text: list[str] = []
     for page in reader.pages[: min(3, len(reader.pages))]:
         try:
@@ -772,7 +982,11 @@ def process_incoming_achievements() -> int:
             continue
 
         detected = analyze_pdf(pdf_bytes, pdf_path.name)
-        crossref = crossref_metadata(str(detected.get("doi", "")))
+        crossref = (
+            {}
+            if detected.get("_source") == "cnki"
+            else crossref_metadata(str(detected.get("doi", "")))
+        )
         sidecar = load_sidecar(pdf_path)
         merged = {
             key: str(value).strip()

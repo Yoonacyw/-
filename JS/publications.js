@@ -1,13 +1,261 @@
-/* 科研成果筛选、统计与排序 */
+/* 科研成果数据加载、筛选、统计与排序 */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const filterForm = document.querySelector("#publication-filter");
     const resultContainer = document.querySelector("[data-achievement-results]");
     if (!filterForm || !resultContainer) return;
 
+    const typeLabels = {
+        project: "科研与教改项目",
+        paper: "学术论文",
+        "intellectual-property": "专利与软件著作权",
+        award: "竞赛与科研奖励"
+    };
+
+    const createTextElement = (tagName, className, text) => {
+        const element = document.createElement(tagName);
+        element.className = className;
+        element.textContent = text;
+        return element;
+    };
+
+    const createBibliographyItem = (label, value, options = {}) => {
+        if (!value) return null;
+
+        const item = document.createElement("div");
+        item.className = "bibliography-item";
+        if (options.className) item.classList.add(options.className);
+
+        item.appendChild(
+            createTextElement("span", "bibliography-label", label)
+        );
+
+        const valueElement = document.createElement("span");
+        valueElement.className = "bibliography-value";
+
+        if (options.href) {
+            const link = document.createElement("a");
+            link.className = "bibliography-link";
+            link.href = options.href;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.textContent = value;
+            valueElement.appendChild(link);
+        } else {
+            valueElement.textContent = value;
+        }
+
+        item.appendChild(valueElement);
+        return item;
+    };
+
+    const createFileLink = (text, href, className, downloadName = "") => {
+        const link = document.createElement("a");
+        link.className = `record-file-button ${className}`;
+        link.href = href;
+        link.textContent = text;
+
+        if (downloadName) {
+            link.download = downloadName;
+        } else {
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+        }
+
+        return link;
+    };
+
+    const createAchievementRecord = (achievement) => {
+        if (!achievement?.title || !achievement?.year || !achievement?.type) {
+            return null;
+        }
+
+        const article = document.createElement("article");
+        article.className = "achievement-record";
+        article.dataset.achievementRecord = "";
+        article.dataset.year = String(achievement.year);
+        article.dataset.type = achievement.type;
+        if (achievement.id) article.dataset.achievementId = achievement.id;
+
+        const meta = document.createElement("div");
+        meta.className = "record-meta";
+        meta.append(
+            createTextElement("span", "record-year", String(achievement.year)),
+            createTextElement(
+                "span",
+                "record-type",
+                typeLabels[achievement.type] || "其他成果"
+            )
+        );
+
+        const content = document.createElement("div");
+        content.className = "record-content";
+        content.appendChild(
+            createTextElement("h3", "", achievement.title)
+        );
+
+        const authorLine =
+            achievement.authorLine || achievement.authors || "";
+        if (authorLine) {
+            content.appendChild(
+                createTextElement("p", "record-author-line", authorLine)
+            );
+        }
+
+        const bibliography = document.createElement("div");
+        bibliography.className = "record-bibliography";
+
+        const doi = (achievement.doi || "").trim();
+        const doiHref = doi
+            ? (doi.startsWith("http") ? doi : `https://doi.org/${doi}`)
+            : "";
+
+        [
+            createBibliographyItem("作者", achievement.authors),
+            createBibliographyItem("期刊", achievement.journal),
+            createBibliographyItem("卷期页码", achievement.citation),
+            createBibliographyItem("DOI", doi, {
+                className: "doi-item",
+                href: doiHref
+            })
+        ].forEach((item) => {
+            if (item) bibliography.appendChild(item);
+        });
+
+        if (bibliography.children.length > 0) {
+            content.appendChild(bibliography);
+        }
+
+        if (achievement.pdf) {
+            const actions = document.createElement("div");
+            actions.className = "record-actions";
+            actions.append(
+                createFileLink(
+                    "在线浏览 PDF",
+                    achievement.pdf,
+                    "record-file-button-primary"
+                ),
+                createFileLink(
+                    "下载 PDF",
+                    achievement.pdf,
+                    "record-file-button-secondary",
+                    achievement.originalFilename || "achievement.pdf"
+                )
+            );
+            content.appendChild(actions);
+        }
+
+        article.append(meta, content);
+        return article;
+    };
+
+    async function loadUploadedAchievements() {
+        try {
+            const response = await fetch("data/achievements.json", {
+                cache: "no-store"
+            });
+            if (!response.ok) return;
+
+            const achievements = await response.json();
+            if (!Array.isArray(achievements)) return;
+
+            const existingIds = new Set(
+                Array.from(
+                    resultContainer.querySelectorAll("[data-achievement-id]")
+                )
+                    .map((record) => record.dataset.achievementId)
+                    .filter(Boolean)
+            );
+            const fragment = document.createDocumentFragment();
+            achievements.forEach((achievement) => {
+                if (achievement.id && existingIds.has(achievement.id)) {
+                    return;
+                }
+                const record = createAchievementRecord(achievement);
+                if (record) fragment.appendChild(record);
+            });
+            resultContainer.prepend(fragment);
+        } catch (error) {
+            /*
+             * 直接双击 HTML 时，部分浏览器会阻止读取 JSON。
+             * 此时保留原有 HTML 成果；通过本地服务器或正式网站访问即可加载。
+             */
+            console.info("未加载新增成果数据：", error.message);
+        }
+    }
+
+    await loadUploadedAchievements();
+
     const records = Array.from(
         resultContainer.querySelectorAll("[data-achievement-record]")
     );
+
+    function createYearFilterOption(year) {
+        const item = document.createElement("li");
+        item.className = "facet-option";
+        item.dataset.facetOption = "";
+
+        const label = document.createElement("label");
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.name = "publication-year";
+        input.value = year;
+        input.dataset.filterYear = "";
+
+        const checkbox = document.createElement("span");
+        checkbox.className = "facet-checkbox";
+        checkbox.setAttribute("aria-hidden", "true");
+
+        const name = document.createElement("span");
+        name.className = "facet-option-name";
+        name.append(
+            createTextElement("span", "facet-year-number", year),
+            createTextElement("span", "facet-year-unit", "年")
+        );
+
+        const count = createTextElement("span", "facet-option-count", "0");
+        count.dataset.yearCount = year;
+
+        label.append(input, checkbox, name, count);
+        item.appendChild(label);
+        return item;
+    }
+
+    function ensureYearFilters() {
+        const yearList = filterForm.querySelector(
+            '[aria-labelledby="year-filter-title"] .facet-options'
+        );
+        if (!yearList) return;
+
+        const existingYears = new Set(
+            Array.from(yearList.querySelectorAll("[data-filter-year]"))
+                .map((input) => input.value)
+        );
+        const recordYears = [...new Set(
+            records.map((record) => record.dataset.year).filter(Boolean)
+        )];
+
+        recordYears.forEach((year) => {
+            if (!existingYears.has(year)) {
+                yearList.appendChild(createYearFilterOption(year));
+            }
+        });
+
+        Array.from(yearList.children)
+            .sort((first, second) => {
+                const firstYear = Number(
+                    first.querySelector("[data-filter-year]")?.value || 0
+                );
+                const secondYear = Number(
+                    second.querySelector("[data-filter-year]")?.value || 0
+                );
+                return secondYear - firstYear;
+            })
+            .forEach((item) => yearList.appendChild(item));
+    }
+
+    ensureYearFilters();
+
     const yearInputs = Array.from(
         filterForm.querySelectorAll("[data-filter-year]")
     );
@@ -22,13 +270,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const activeFilters = document.querySelector("[data-active-filters]");
     const activeFilterList = document.querySelector("[data-active-filter-list]");
     const emptyPanel = document.querySelector("[data-results-empty]");
-
-    const typeLabels = {
-        project: "科研与教改项目",
-        paper: "学术论文",
-        "intellectual-property": "专利与软件著作权",
-        award: "竞赛与科研奖励"
-    };
 
     const countRecords = (field, value) =>
         records.filter((record) => record.dataset[field] === value).length;
