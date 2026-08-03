@@ -458,6 +458,16 @@ def clean_author_name(name: str) -> str:
     return name.strip()
 
 
+def has_chinese_characters(value: str) -> bool:
+    """判断文本是否包含汉字。"""
+    return bool(re.search(r"[\u3400-\u9fff]", value or ""))
+
+
+def is_chinese_paper(title: str) -> bool:
+    """根据题名判断论文主要语言；允许题名中夹杂英文缩写。"""
+    return len(re.findall(r"[\u3400-\u9fff]", title or "")) >= 4
+
+
 def format_author_name(name: str) -> str:
     """把英文姓名统一为 Last, First；中文姓名保持原顺序。"""
     name = clean_author_name(name)
@@ -468,7 +478,7 @@ def format_author_name(name: str) -> str:
         r"[A-Za-z]",
         name,
     ):
-        return name.replace(",", "").strip()
+        return re.sub(r"[,，;；、\s]+", "", name).strip()
 
     if "," in name:
         last_name, given_name = name.split(",", 1)
@@ -488,10 +498,28 @@ def format_author_name(name: str) -> str:
 
 
 def parse_author_names(raw_authors: str) -> list[str]:
-    """拆分作者并去重，输出统一的分号分隔姓名列表。"""
+    """拆分作者并去重；中文姓名保持中文，英文姓名转为 Last, First。"""
     raw_authors = normalize_metadata(raw_authors)
     if not raw_authors:
         return []
+
+    # 中文作者不能套用英文的“逗号两两配对”规则。
+    if has_chinese_characters(raw_authors) and not re.search(
+        r"[A-Za-z]",
+        raw_authors,
+    ):
+        candidates = re.split(r"[,，;；、\s]+", raw_authors)
+        formatted: list[str] = []
+        seen: set[str] = set()
+        for candidate in candidates:
+            name = format_author_name(candidate)
+            name = re.sub(r"[\d*†‡§#¹²³⁴⁵⁶⁷⁸⁹⁰ᵃᵇᶜ]+$", "", name)
+            if not re.fullmatch(r"[\u3400-\u9fff·]{2,8}", name):
+                continue
+            if name not in seen:
+                seen.add(name)
+                formatted.append(name)
+        return formatted
 
     raw_authors = raw_authors.replace("；", ";").replace("，", ",")
     raw_authors = re.sub(
@@ -535,6 +563,53 @@ def parse_author_names(raw_authors: str) -> list[str]:
             seen.add(key)
             formatted.append(name)
     return formatted
+
+
+def authors_for_paper(
+    names: list[str],
+    title: str,
+    limit: int | None = None,
+) -> str:
+    """按论文语言筛选并连接作者姓名。"""
+    chinese = is_chinese_paper(title)
+    matching = [
+        name
+        for name in names
+        if has_chinese_characters(name) == chinese
+    ]
+    selected = matching or names
+    if limit is not None:
+        selected = selected[:limit]
+    separator = "，" if chinese else "; "
+    return separator.join(selected)
+
+
+def select_author_names(
+    title: str,
+    *sources: list[str],
+) -> list[str]:
+    """从多个识别来源中选择人数最多且与题名语言一致的作者列表。"""
+    chinese = is_chinese_paper(title)
+    preferred = [
+        [
+            name
+            for name in source
+            if has_chinese_characters(name) == chinese
+        ]
+        for source in sources
+    ]
+    matching_sources = [source for source in preferred if source]
+    candidates = matching_sources or [source for source in sources if source]
+    return max(candidates, key=len, default=[])
+
+
+def normalize_authors_for_paper(
+    raw_authors: str,
+    title: str,
+    limit: int | None = None,
+) -> str:
+    """把任一入口的作者文本统一为与论文语言匹配的显示格式。"""
+    return authors_for_paper(parse_author_names(raw_authors), title, limit)
 
 
 def normalize_cnki_line(value: str) -> str:
@@ -657,7 +732,11 @@ def analyze_cnki_pdf(
         title = "".join(title_parts)
 
     english_authors = cnki_english_authors(lines[:abstract_index + 15])
-    author_names = english_authors or chinese_authors
+    chinese_paper = is_chinese_paper(title)
+    if chinese_paper:
+        author_names = chinese_authors or english_authors
+    else:
+        author_names = english_authors or chinese_authors
 
     year = ""
     volume = ""
@@ -722,8 +801,8 @@ def analyze_cnki_pdf(
         "type": "paper",
         "year": year,
         "title": title,
-        "authors": "; ".join(author_names),
-        "authorLine": "; ".join(author_names[:3]),
+        "authors": authors_for_paper(author_names, title),
+        "authorLine": authors_for_paper(author_names, title, 3),
         "journal": journal,
         "citation": " ".join(citation_parts),
         "doi": doi,
@@ -792,14 +871,9 @@ def analyze_pdf(pdf_bytes: bytes, filename: str) -> dict[str, Any]:
         else []
     )
 
-    # PDF 元数据常常只有第一作者；正文识别到更多作者时优先采用正文。
-    author_names = (
-        body_authors
-        if len(body_authors) > len(metadata_authors)
-        else metadata_authors
-    )
-    authors = "; ".join(author_names)
-    main_authors = "; ".join(author_names[:3])
+    author_names = select_author_names(title, body_authors, metadata_authors)
+    authors = authors_for_paper(author_names, title)
+    main_authors = authors_for_paper(author_names, title, 3)
 
     journal = (
         metadata_subject
@@ -1004,6 +1078,10 @@ def process_incoming_achievements() -> int:
             if detected.get("_source") == "cnki"
             else crossref_metadata(str(detected.get("doi", "")))
         )
+        if is_chinese_paper(str(detected.get("title", ""))):
+            # Crossref 中的中文论文常只有罗马化作者，不能覆盖 PDF 中文作者。
+            for language_field in ("title", "authors", "authorLine"):
+                crossref.pop(language_field, None)
         sidecar = load_sidecar(pdf_path)
         merged = {
             key: str(value).strip()
@@ -1016,7 +1094,10 @@ def process_incoming_achievements() -> int:
         achievement_type = merged.get("type", "paper")
         year = merged.get("year", "")
         title = merged.get("title", "")
-        authors = merged.get("authors", "")
+        authors = normalize_authors_for_paper(
+            merged.get("authors", ""),
+            title,
+        )
         if achievement_type not in VALID_TYPES:
             raise ValueError(f"{pdf_path.name}：成果类型不正确")
         if not re.fullmatch(r"(?:19|20)\d{2}", year):
@@ -1032,11 +1113,13 @@ def process_incoming_achievements() -> int:
                 f"{pdf_path.name}：未可靠识别作者；请上传同名 JSON 覆盖文件"
             )
 
-        author_line = merged.get("authorLine", "")
+        author_line = normalize_authors_for_paper(
+            merged.get("authorLine", ""),
+            title,
+            3,
+        )
         if authors and not author_line:
-            author_line = "; ".join(
-                part.strip() for part in authors.split(";")[:3] if part.strip()
-            )
+            author_line = normalize_authors_for_paper(authors, title, 3)
 
         record_id = f"{year}-{digest[:12]}"
         year_folder = PDF_ROOT / year
@@ -1237,14 +1320,23 @@ class AchievementRequestHandler(SimpleHTTPRequestHandler):
 
         doi = fields.get("doi", "").strip()
         doi = re.sub(r"^https?://(?:dx\.)?doi\.org/", "", doi)
+        authors = normalize_authors_for_paper(
+            fields.get("authors", ""),
+            title,
+        )
+        author_line = normalize_authors_for_paper(
+            fields.get("authorLine", "") or authors,
+            title,
+            3,
+        )
 
         record = {
             "id": record_id,
             "type": achievement_type,
             "year": year,
             "title": title,
-            "authorLine": fields.get("authorLine", "").strip(),
-            "authors": fields.get("authors", "").strip(),
+            "authorLine": author_line,
+            "authors": authors,
             "journal": fields.get("journal", "").strip(),
             "citation": fields.get("citation", "").strip(),
             "doi": doi,
