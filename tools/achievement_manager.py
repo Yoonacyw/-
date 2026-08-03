@@ -67,6 +67,15 @@ TYPE_LABELS = {
     "intellectual-property": "专利与软件著作权",
     "award": "竞赛与科研奖励",
 }
+REVIEW_FIELDS = (
+    "type",
+    "year",
+    "title",
+    "authors",
+    "journal",
+    "citation",
+    "doi",
+)
 DOI_PATTERN = re.compile(
     r"\b10\.\d{4,9}/[-._;()/:A-Z0-9]+",
     flags=re.IGNORECASE,
@@ -654,6 +663,7 @@ def analyze_cnki_pdf(
     pdf_bytes: bytes,
     metadata: Any,
     filename: str,
+    strict: bool = True,
 ) -> dict[str, Any] | None:
     """按知网期刊首页版式提取题名、作者和完整书目信息。"""
     metadata_text = " ".join(
@@ -848,7 +858,7 @@ def analyze_cnki_pdf(
         )
         if not value
     ]
-    if missing_fields:
+    if missing_fields and strict:
         raise ValueError(
             f"{filename}：知网 PDF 未可靠识别"
             + "、".join(missing_fields)
@@ -873,7 +883,11 @@ def analyze_cnki_pdf(
     }
 
 
-def analyze_pdf(pdf_bytes: bytes, filename: str) -> dict[str, Any]:
+def analyze_pdf(
+    pdf_bytes: bytes,
+    filename: str,
+    strict: bool = True,
+) -> dict[str, Any]:
     if not pdf_bytes.startswith(b"%PDF"):
         raise ValueError("所选文件不是有效的 PDF")
 
@@ -889,7 +903,12 @@ def analyze_pdf(pdf_bytes: bytes, filename: str) -> dict[str, Any]:
             raise ValueError("暂不支持有密码的 PDF") from exc
 
     metadata = reader.metadata or {}
-    cnki_result = analyze_cnki_pdf(pdf_bytes, metadata, filename)
+    cnki_result = analyze_cnki_pdf(
+        pdf_bytes,
+        metadata,
+        filename,
+        strict=strict,
+    )
     if cnki_result:
         return cnki_result
 
@@ -1058,16 +1077,7 @@ def load_sidecar(pdf_path: Path) -> dict[str, str]:
         raise ValueError(f"{sidecar_path.name} 无法读取或 JSON 格式错误") from exc
     if not isinstance(payload, dict):
         raise ValueError(f"{sidecar_path.name} 顶层必须是 JSON 对象")
-    allowed = {
-        "type",
-        "year",
-        "title",
-        "authorLine",
-        "authors",
-        "journal",
-        "citation",
-        "doi",
-    }
+    allowed = {*REVIEW_FIELDS, "authorLine"}
     return {
         key: str(value).strip()
         for key, value in payload.items()
@@ -1092,104 +1102,221 @@ def existing_pdf_hashes(records: list[dict[str, Any]]) -> set[str]:
     return hashes
 
 
-def write_action_summary(lines: list[str]) -> None:
+def write_action_summary(
+    lines: list[str],
+    heading: str = "成果 PDF 自动处理",
+) -> None:
     summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
     if not summary_path:
         return
     with open(summary_path, "a", encoding="utf-8") as summary:
-        summary.write("## 成果 PDF 自动处理\n\n")
+        summary.write(f"## {heading}\n\n")
         summary.write("\n".join(f"- {line}" for line in lines) + "\n")
 
 
-def process_incoming_achievements() -> int:
-    """处理 GitHub 网页上传目录中的 PDF，并生成公开成果记录。"""
-    ensure_storage()
+def incoming_pdf_paths() -> list[Path]:
+    """返回 GitHub 待审核目录中的全部 PDF。"""
     INCOMING_ROOT.mkdir(parents=True, exist_ok=True)
-    pdf_paths = sorted(
-        path for path in INCOMING_ROOT.rglob("*")
+    return sorted(
+        path
+        for path in INCOMING_ROOT.rglob("*")
         if path.is_file() and path.suffix.lower() == ".pdf"
     )
+
+
+def detect_review_fields(pdf_path: Path) -> dict[str, str]:
+    """尽量识别 PDF，并生成供人工修改的字段。"""
+    detected = analyze_pdf(
+        pdf_path.read_bytes(),
+        pdf_path.name,
+        strict=False,
+    )
+    crossref = (
+        {}
+        if detected.get("_source") == "cnki"
+        else crossref_metadata(str(detected.get("doi", "")))
+    )
+    if is_chinese_paper(str(detected.get("title", ""))):
+        for language_field in ("title", "authors", "authorLine"):
+            crossref.pop(language_field, None)
+
+    merged = {
+        key: str(value).strip()
+        for key, value in detected.items()
+        if not key.startswith("_") and isinstance(value, (str, int))
+    }
+    merged.update(
+        {
+            key: str(value).strip()
+            for key, value in crossref.items()
+            if value
+        }
+    )
+    title = merged.get("title", "")
+    authors = normalize_authors_for_paper(
+        merged.get("authors", ""),
+        title,
+    )
+    return {
+        "type": merged.get("type", "paper") or "paper",
+        "year": merged.get("year", ""),
+        "title": title,
+        "authors": authors,
+        "journal": merged.get("journal", ""),
+        "citation": merged.get("citation", ""),
+        "doi": merged.get("doi", ""),
+    }
+
+
+def save_review_draft(
+    pdf_path: Path,
+    fields: dict[str, str],
+    warning: str = "",
+) -> Path:
+    """在 PDF 旁生成可通过 GitHub 网页编辑的审核 JSON。"""
+    review_path = pdf_path.with_suffix(".json")
+    payload: dict[str, str] = {
+        "_instructions": (
+            "请检查并修改下面字段，保存后到 Actions 运行"
+            "“发布已人工确认的成果”"
+        ),
+        "_pdf": pdf_path.name,
+    }
+    if warning:
+        payload["_warning"] = warning
+    payload.update({field: fields.get(field, "") for field in REVIEW_FIELDS})
+    temporary = review_path.with_suffix(".json.tmp")
+    temporary.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    temporary.replace(review_path)
+    return review_path
+
+
+def prepare_incoming_reviews() -> int:
+    """只生成审核 JSON，不发布 PDF。"""
+    ensure_storage()
+    pdf_paths = incoming_pdf_paths()
     records = load_achievements()
     if not pdf_paths:
-        sync_achievements_to_publications(records)
         print("incoming-achievements 中没有待处理 PDF。")
-        write_action_summary(["没有发现待处理 PDF。"])
+        write_action_summary(
+            ["没有发现待识别 PDF。"],
+            "成果 PDF 识别草稿",
+        )
         return 0
 
     known_hashes = existing_pdf_hashes(records)
-    processed: list[str] = []
+    messages: list[str] = []
+    created = 0
 
     for pdf_path in pdf_paths:
-        pdf_bytes = pdf_path.read_bytes()
-        digest = hashlib.sha256(pdf_bytes).hexdigest()
-        sidecar_path = pdf_path.with_suffix(".json")
-        if digest in known_hashes:
-            pdf_path.unlink()
-            sidecar_path.unlink(missing_ok=True)
-            processed.append(f"跳过重复文件：{pdf_path.name}")
+        review_path = pdf_path.with_suffix(".json")
+        if review_path.exists():
+            messages.append(f"等待人工确认：{review_path.name}")
             continue
+        digest = hashlib.sha256(pdf_path.read_bytes()).hexdigest()
+        warnings: list[str] = []
+        if digest in known_hashes:
+            warnings.append("该 PDF 与已发布附件重复，请不要再次发布")
+        fields = detect_review_fields(pdf_path)
+        missing_labels = [
+            label
+            for field, label in (
+                ("year", "年份 year"),
+                ("title", "题名 title"),
+                ("authors", "作者 authors"),
+            )
+            if not fields.get(field)
+        ]
+        if missing_labels:
+            warnings.append("请人工填写：" + "、".join(missing_labels))
+        save_review_draft(pdf_path, fields, "；".join(warnings))
+        created += 1
+        messages.append(f"已生成审核文件：{review_path.name}")
 
-        detected = analyze_pdf(pdf_bytes, pdf_path.name)
-        crossref = (
-            {}
-            if detected.get("_source") == "cnki"
-            else crossref_metadata(str(detected.get("doi", "")))
+    write_action_summary(messages, "成果 PDF 识别草稿")
+    for message in messages:
+        print(message)
+    return created
+
+
+def select_reviewed_pdfs(filename: str = "") -> list[Path]:
+    """按工作流输入选择一个 PDF；留空时选择全部待审核 PDF。"""
+    pdf_paths = incoming_pdf_paths()
+    target = filename.strip().replace("\\", "/")
+    if not target:
+        return pdf_paths
+    matches = [
+        path
+        for path in pdf_paths
+        if path.name == target
+        or path.stem == Path(target).stem
+        or path.relative_to(INCOMING_ROOT).as_posix() == target
+    ]
+    if not matches:
+        raise ValueError(f"找不到待发布 PDF：{filename}")
+    if len(matches) > 1:
+        raise ValueError(f"PDF 名称不唯一，请填写相对路径：{filename}")
+    return matches
+
+
+def publish_reviewed_achievements(filename: str = "") -> int:
+    """使用人工修改后的同名 JSON 发布成果。"""
+    ensure_storage()
+    pdf_paths = select_reviewed_pdfs(filename)
+    records = load_achievements()
+    if not pdf_paths:
+        sync_achievements_to_publications(records)
+        print("没有待发布 PDF。")
+        write_action_summary(
+            ["没有待发布 PDF。"],
+            "发布已人工确认的成果",
         )
-        if is_chinese_paper(str(detected.get("title", ""))):
-            # Crossref 中的中文论文常只有罗马化作者，不能覆盖 PDF 中文作者。
-            for language_field in ("title", "authors", "authorLine"):
-                crossref.pop(language_field, None)
-        sidecar = load_sidecar(pdf_path)
-        merged = {
-            key: str(value).strip()
-            for key, value in detected.items()
-            if not key.startswith("_") and isinstance(value, (str, int))
-        }
-        merged.update({key: value for key, value in crossref.items() if value})
-        merged.update({key: value for key, value in sidecar.items() if value})
+        return 0
 
-        achievement_type = merged.get("type", "paper")
-        year = merged.get("year", "")
-        title = merged.get("title", "")
+    known_hashes = existing_pdf_hashes(records)
+    pending: list[tuple[Path, Path, Path, dict[str, Any]]] = []
+    for pdf_path in pdf_paths:
+        review_path = pdf_path.with_suffix(".json")
+        if not review_path.exists():
+            raise ValueError(
+                f"{pdf_path.name}：尚未生成审核 JSON，请等待识别工作流完成"
+            )
+        reviewed = load_sidecar(pdf_path)
+        digest = hashlib.sha256(pdf_path.read_bytes()).hexdigest()
+        if digest in known_hashes:
+            raise ValueError(f"{pdf_path.name}：该 PDF 已经发布，不能重复添加")
+
+        achievement_type = reviewed.get("type", "paper")
+        year = reviewed.get("year", "")
+        title = reviewed.get("title", "")
         authors = normalize_authors_for_paper(
-            merged.get("authors", ""),
+            reviewed.get("authors", ""),
             title,
         )
         if achievement_type not in VALID_TYPES:
             raise ValueError(f"{pdf_path.name}：成果类型不正确")
         if not re.fullmatch(r"(?:19|20)\d{2}", year):
-            raise ValueError(f"{pdf_path.name}：未可靠识别四位成果年份")
-        if not title or (
-            title == pdf_path.stem
-            and not detected.get("_detectedTitle")
-            and not sidecar.get("title")
-        ):
-            raise ValueError(f"{pdf_path.name}：未可靠识别成果题目")
+            raise ValueError(f"{review_path.name}：请填写四位成果年份")
+        if not title:
+            raise ValueError(f"{review_path.name}：请填写成果题目")
         if achievement_type == "paper" and not authors:
-            raise ValueError(
-                f"{pdf_path.name}：未可靠识别作者；请上传同名 JSON 覆盖文件"
-            )
+            raise ValueError(f"{review_path.name}：请填写论文作者")
 
-        author_line = normalize_authors_for_paper(
-            merged.get("authorLine", ""),
-            title,
-            3,
-        )
-        if authors and not author_line:
-            author_line = normalize_authors_for_paper(authors, title, 3)
-
+        author_line = normalize_authors_for_paper(authors, title, 3)
         record_id = f"{year}-{digest[:12]}"
         year_folder = PDF_ROOT / year
-        year_folder.mkdir(parents=True, exist_ok=True)
         stored_filename = f"{record_id}.pdf"
         destination = year_folder / stored_filename
-        shutil.move(str(pdf_path), str(destination))
-        sidecar_path.unlink(missing_ok=True)
+        if destination.exists():
+            raise ValueError(f"目标附件已存在：{destination.name}")
 
         doi = re.sub(
             r"^https?://(?:dx\.)?doi\.org/",
             "",
-            merged.get("doi", ""),
+            reviewed.get("doi", ""),
             flags=re.IGNORECASE,
         )
         record = {
@@ -1199,24 +1326,48 @@ def process_incoming_achievements() -> int:
             "title": title,
             "authorLine": author_line,
             "authors": authors,
-            "journal": merged.get("journal", ""),
-            "citation": merged.get("citation", ""),
+            "journal": reviewed.get("journal", ""),
+            "citation": reviewed.get("citation", ""),
             "doi": doi,
             "pdf": f"files/achievements/{year}/{stored_filename}",
             "originalFilename": pdf_path.name,
             "addedAt": datetime.now().astimezone().isoformat(timespec="seconds"),
             "sourceSha256": digest,
         }
-        records.append(record)
+        pending.append((pdf_path, review_path, destination, record))
         known_hashes.add(digest)
-        processed.append(f"已发布：{title}")
 
-    save_achievements(records)
-    sync_achievements_to_publications(records)
-    write_action_summary(processed)
-    for message in processed:
+    moved: list[tuple[Path, Path]] = []
+    original_records = list(records)
+    try:
+        for pdf_path, _review_path, destination, record in pending:
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(pdf_path), str(destination))
+            moved.append((pdf_path, destination))
+            records.append(record)
+        save_achievements(records)
+        sync_achievements_to_publications(records)
+        for _pdf_path, review_path, _destination, _record in pending:
+            review_path.unlink()
+    except Exception:
+        save_achievements(original_records)
+        sync_achievements_to_publications(original_records)
+        for original, destination in reversed(moved):
+            if destination.exists():
+                original.parent.mkdir(parents=True, exist_ok=True)
+                shutil.move(str(destination), str(original))
+        raise
+
+    messages = [f"已发布：{item[3]['title']}" for item in pending]
+    write_action_summary(messages, "发布已人工确认的成果")
+    for message in messages:
         print(message)
-    return len(processed)
+    return len(pending)
+
+
+def process_incoming_achievements() -> int:
+    """兼容旧命令：现在只生成审核 JSON，不再直接发布。"""
+    return prepare_incoming_reviews()
 
 
 def parse_multipart(
@@ -1325,7 +1476,7 @@ class AchievementRequestHandler(SimpleHTTPRequestHandler):
             filename, pdf_bytes = file_item
 
             if path == "/api/analyze":
-                result = analyze_pdf(pdf_bytes, filename)
+                result = analyze_pdf(pdf_bytes, filename, strict=False)
                 self.send_json({"ok": True, "result": result})
                 return
 
@@ -1432,16 +1583,35 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="启动成果附件管理器")
     parser.add_argument("--port", type=int, default=8770)
     parser.add_argument("--no-browser", action="store_true")
-    parser.add_argument(
+    actions = parser.add_mutually_exclusive_group()
+    actions.add_argument(
+        "--prepare-incoming",
+        action="store_true",
+        help="识别 GitHub 上传的 PDF 并生成待人工确认 JSON",
+    )
+    actions.add_argument(
+        "--publish-reviewed",
+        nargs="?",
+        const="",
+        metavar="PDF文件名",
+        help="发布已具备同名审核 JSON 的 PDF；不填文件名时发布全部",
+    )
+    actions.add_argument(
         "--process-incoming",
         action="store_true",
-        help="处理 incoming-achievements 中由 GitHub 上传的 PDF",
+        help="旧命令兼容项：仅生成审核 JSON，不再直接发布",
     )
     args = parser.parse_args()
 
-    if args.process_incoming:
-        process_incoming_achievements()
-        return
+    try:
+        if args.prepare_incoming or args.process_incoming:
+            prepare_incoming_reviews()
+            return
+        if args.publish_reviewed is not None:
+            publish_reviewed_achievements(args.publish_reviewed)
+            return
+    except ValueError as exc:
+        parser.exit(1, f"错误：{exc}\n")
 
     ensure_storage()
     server = ThreadingHTTPServer(

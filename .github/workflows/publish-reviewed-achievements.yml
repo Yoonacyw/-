@@ -1,15 +1,13 @@
-name: 识别成果 PDF（等待人工确认）
+name: 发布已人工确认的成果
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "incoming-achievements/**"
-      - "tools/achievement_manager.py"
-      - "requirements-achievements.txt"
-      - ".github/workflows/auto-publish-achievements.yml"
   workflow_dispatch:
+    inputs:
+      pdf_filename:
+        description: "PDF 文件名（只有一个待发布文件时可留空）"
+        required: false
+        default: ""
+        type: string
 
 permissions:
   contents: write
@@ -19,8 +17,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  prepare-review:
-    name: 识别 PDF 并生成审核信息
+  publish-reviewed:
+    name: 发布审核后的成果信息与 PDF
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -40,19 +38,23 @@ jobs:
       - name: 安装 PDF 识别依赖
         run: python -m pip install --requirement requirements-achievements.txt
 
-      - name: 识别 PDF 并生成可编辑 JSON
-        run: python tools/achievement_manager.py --prepare-incoming
+      - name: 发布已人工确认的成果
+        env:
+          REVIEW_PDF_FILENAME: ${{ inputs.pdf_filename }}
+        run: >-
+          python tools/achievement_manager.py
+          --publish-reviewed "$REVIEW_PDF_FILENAME"
 
-      - name: 提交待人工确认的识别结果
+      - name: 提交成果记录和附件
         shell: bash
         run: |
-          git add -A -- incoming-achievements
+          git add -A -- incoming-achievements data/achievements.json files/achievements publications.html
           if git diff --cached --quiet; then
-            echo "没有新的审核 JSON。"
+            echo "没有需要发布的成果变更。"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "生成成果识别审核信息"
+          git commit -m "发布人工确认的成果 PDF"
           git pull --rebase origin main
           git push origin HEAD:main
