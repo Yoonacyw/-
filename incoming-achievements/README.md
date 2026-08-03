@@ -11,6 +11,8 @@
 5. 打开仓库的 `Actions` 页面，查看“自动识别并发布成果 PDF”。
 6. 工作流成功后，PDF 会移入 `files/achievements/年份`，成果信息会写入 `data/achievements.json`，随后 GitHub Pages 自动更新。
 
+`data/achievements.json` 是自动成果的唯一数据源。工作流会同时重建 `publications.html` 中标记出的自动成果区，请不要手工修改该区域；需要更正信息时只编辑 JSON。
+
 ## 识别规则
 
 - 系统先从 PDF 前三页提取 DOI、题目和作者。

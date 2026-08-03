@@ -48,6 +48,9 @@ DATA_FILE = ROOT / "data" / "achievements.json"
 PDF_ROOT = ROOT / "files" / "achievements"
 INCOMING_ROOT = ROOT / "incoming-achievements"
 PUBLICATIONS_FILE = ROOT / "publications.html"
+ACHIEVEMENT_AUTO_START_MARKER = (
+    "<!-- ===== 自动成果记录：由 data/achievements.json 同步 ===== -->"
+)
 ACHIEVEMENT_END_MARKER = (
     "<!-- ===== 成果条目：编辑到这里结束 ===== -->"
 )
@@ -230,37 +233,50 @@ def achievement_html(record: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def insert_achievement_into_publications(
-    record: dict[str, Any],
+def sync_achievements_to_publications(
+    records: list[dict[str, Any]],
 ) -> None:
-    """在成果编辑区末尾插入真实 HTML 代码。"""
+    """用 JSON 数据完整重建 publications.html 的自动成果区。"""
     if not PUBLICATIONS_FILE.exists():
         raise ValueError("找不到 publications.html")
 
     source = PUBLICATIONS_FILE.read_text(encoding="utf-8")
-    record_id = html.escape(str(record["id"]), quote=True)
-    if f'data-achievement-id="{record_id}"' in source:
-        return
+    if ACHIEVEMENT_AUTO_START_MARKER not in source:
+        raise ValueError("publications.html 中缺少自动成果起始标记")
     if ACHIEVEMENT_END_MARKER not in source:
         raise ValueError("publications.html 中缺少成果结束标记")
 
-    block = achievement_html(record)
-    marker_line = f"{' ' * 20}{ACHIEVEMENT_END_MARKER}"
-    if marker_line in source:
-        updated = source.replace(
-            marker_line,
-            f"{block}\n\n{marker_line}",
-            1,
-        )
-    else:
-        updated = source.replace(
-            ACHIEVEMENT_END_MARKER,
-            f"{block}\n\n{ACHIEVEMENT_END_MARKER}",
-            1,
-        )
+    start_position = source.index(ACHIEVEMENT_AUTO_START_MARKER)
+    end_position = source.index(
+        ACHIEVEMENT_END_MARKER,
+        start_position,
+    )
+    start_line = source.rfind("\n", 0, start_position) + 1
+    end_line_break = source.find("\n", end_position)
+    end_line = len(source) if end_line_break < 0 else end_line_break
+
+    indent = " " * 20
+    blocks = "\n\n".join(achievement_html(record) for record in records)
+    replacement_lines = [
+        f"{indent}{ACHIEVEMENT_AUTO_START_MARKER}",
+    ]
+    if blocks:
+        replacement_lines.extend(["", blocks, ""])
+    replacement_lines.append(f"{indent}{ACHIEVEMENT_END_MARKER}")
+    replacement = "\n".join(replacement_lines)
+    updated = source[:start_line] + replacement + source[end_line:]
+
     temporary = PUBLICATIONS_FILE.with_suffix(".html.tmp")
     temporary.write_text(updated, encoding="utf-8")
     temporary.replace(PUBLICATIONS_FILE)
+
+
+def insert_achievement_into_publications(
+    record: dict[str, Any],
+) -> None:
+    """兼容本地管理器：保存后同步全部自动成果。"""
+    del record
+    sync_achievements_to_publications(load_achievements())
 
 
 def normalize_metadata(value: Any) -> str:
@@ -962,12 +978,13 @@ def process_incoming_achievements() -> int:
         path for path in INCOMING_ROOT.rglob("*")
         if path.is_file() and path.suffix.lower() == ".pdf"
     )
+    records = load_achievements()
     if not pdf_paths:
+        sync_achievements_to_publications(records)
         print("incoming-achievements 中没有待处理 PDF。")
         write_action_summary(["没有发现待处理 PDF。"])
         return 0
 
-    records = load_achievements()
     known_hashes = existing_pdf_hashes(records)
     processed: list[str] = []
 
@@ -1055,6 +1072,7 @@ def process_incoming_achievements() -> int:
         processed.append(f"已发布：{title}")
 
     save_achievements(records)
+    sync_achievements_to_publications(records)
     write_action_summary(processed)
     for message in processed:
         print(message)

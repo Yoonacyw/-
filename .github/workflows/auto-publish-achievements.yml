@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "incoming-achievements/**"
+      - "data/achievements.json"
   workflow_dispatch:
 
 permissions:
@@ -43,7 +44,7 @@ jobs:
       - name: 提交自动生成的成果记录
         shell: bash
         run: |
-          git add -A -- incoming-achievements data/achievements.json files/achievements
+          git add -A -- incoming-achievements data/achievements.json files/achievements publications.html
           if git diff --cached --quiet; then
             echo "没有需要提交的成果变更。"
             exit 0
