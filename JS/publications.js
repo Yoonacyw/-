@@ -1,6 +1,7 @@
 /* 科研成果数据加载、筛选、统计与排序 */
 
 document.addEventListener("DOMContentLoaded", async () => {
+    const EARLIEST_NAVIGATION_YEAR = 2020;
     const filterForm = document.querySelector("#publication-filter");
     const resultContainer = document.querySelector("[data-achievement-results]");
     if (!filterForm || !resultContainer) return;
@@ -234,8 +235,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         const recordYears = [...new Set(
             records.map((record) => record.dataset.year).filter(Boolean)
         )];
+        const numericYears = recordYears
+            .map(Number)
+            .filter(Number.isInteger);
+        const latestNavigationYear = Math.max(
+            new Date().getFullYear(),
+            EARLIEST_NAVIGATION_YEAR,
+            ...numericYears
+        );
+        const navigationYears = Array.from(
+            { length: latestNavigationYear - EARLIEST_NAVIGATION_YEAR + 1 },
+            (_, index) => String(latestNavigationYear - index)
+        );
 
-        recordYears.forEach((year) => {
+        [...new Set([...navigationYears, ...recordYears])].forEach((year) => {
             if (!existingYears.has(year)) {
                 yearList.appendChild(createYearFilterOption(year));
             }
