@@ -26,5 +26,20 @@
     "pdf": "files/achievements/2026/20260731143739-5193e567.pdf",
     "originalFilename": "1-s2.0-S136192092600252X-main.pdf",
     "addedAt": "2026-07-31T14:37:39+08:00"
+  },
+  {
+    "id": "2024-100a33157903",
+    "type": "paper",
+    "year": "2024",
+    "title": "Applied Chemical Industry",
+    "authorLine": "CNKI",
+    "authors": "CNKI",
+    "journal": "",
+    "citation": "",
+    "doi": "10.16581/j.cnki.issn1671-3206.20240628.004",
+    "pdf": "files/achievements/2024/2024-100a33157903.pdf",
+    "originalFilename": "马峰 等 - 2024 - 有机硅-聚丙酸酯改性明色沥青及混合料路用性能.pdf",
+    "addedAt": "2026-08-03T01:28:16+00:00",
+    "sourceSha256": "100a3315790342be1b5649b6b75d087a0364c819e0aff0ded977cf99083eda2a"
   }
 ]
