@@ -56,5 +56,20 @@
     "originalFilename": "史柯 等 - 2024 - 基于分子模拟的废大豆油再生沥青扩散行为.pdf",
     "addedAt": "2026-08-03T10:18:38+08:00",
     "sourceSha256": "dee912325a8d32da99818338ec8ff8fd6de9499b7716eccd6930ee2d79d20e15"
+  },
+  {
+    "id": "2023-7012fcf92b60",
+    "type": "paper",
+    "year": "2023",
+    "title": "PPA/LSBR复合改性沥青及混合料性能研究*",
+    "authorLine": "马峰，彭冲，傅珍",
+    "authors": "马峰，彭冲，傅珍，侯英杰，唐钰杰，常晓绒",
+    "journal": "功能材料",
+    "citation": "54(01): 1001-1006",
+    "doi": "10.3969/ji.ssn.1001-9731.2023.01.001",
+    "pdf": "files/achievements/2023/2023-7012fcf92b60.pdf",
+    "originalFilename": "马峰 等 - 2023 - PPALSBR复合改性沥青及混合料性能研究.pdf",
+    "addedAt": "2026-08-03T02:45:30+00:00",
+    "sourceSha256": "7012fcf92b6011c78b78d062167a8a155b16d602168537b25e9be29175affeb6"
   }
 ]
