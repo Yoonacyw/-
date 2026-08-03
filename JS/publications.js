@@ -12,6 +12,23 @@ document.addEventListener("DOMContentLoaded", async () => {
         "intellectual-property": "专利与软件著作权",
         award: "竞赛与科研奖励"
     };
+    const titleCollator = new Intl.Collator("zh-CN-u-co-pinyin", {
+        sensitivity: "base",
+        numeric: true
+    });
+
+    const getRecordTitle = (record) =>
+        record.querySelector(".record-content h3")?.textContent.trim() || "";
+
+    const compareRecords = (first, second) => {
+        const yearDifference =
+            Number(second.dataset.year) - Number(first.dataset.year);
+
+        return yearDifference || titleCollator.compare(
+            getRecordTitle(first),
+            getRecordTitle(second)
+        );
+    };
 
     const createTextElement = (tagName, className, text) => {
         const element = document.createElement(tagName);
@@ -393,9 +410,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     records
-        .sort((first, second) =>
-            Number(second.dataset.year) - Number(first.dataset.year)
-        )
+        .sort(compareRecords)
         .forEach((record) => resultContainer.appendChild(record));
 
     allInputs.forEach((input) =>
