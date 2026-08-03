@@ -758,6 +758,51 @@ def analyze_cnki_pdf(
         if journal_match:
             journal = re.sub(r"\s+", "", journal_match.group(1))
 
+    # 部分知网页眉会把“年/卷/期”和具体数字拆到两条文字层。
+    # 优先从首页底部的标准引文补全年、卷、期和页码。
+    normalized_page = normalize_cnki_line(first_text)
+    bibliography_match = re.search(
+        r"((?:19|20)\d{2})\s*[,，]\s*(\d{1,4})\s*"
+        r"\(\s*(\d{1,4})\s*\)\s*[:：]\s*"
+        r"(\d+\s*[-–—]\s*\d+)",
+        normalized_page,
+    )
+    citation_pages = ""
+    if bibliography_match:
+        citation_year, citation_volume, citation_issue, citation_pages = (
+            bibliography_match.groups()
+        )
+        year = year or citation_year
+        volume = volume or citation_volume
+        issue = issue or citation_issue
+        citation_pages = re.sub(r"\s*[-–—]\s*", "-", citation_pages)
+
+    if not year or not volume or not issue:
+        for line in lines[:6]:
+            header_numbers = re.search(
+                r"((?:19|20)\d{2})\s+(\d{1,4})\s+(\d{1,4})\s*$",
+                line,
+            )
+            if header_numbers:
+                header_year, header_volume, header_issue = (
+                    header_numbers.groups()
+                )
+                year = year or header_year
+                volume = volume or header_volume
+                issue = issue or header_issue
+                break
+
+    if not journal:
+        for line in lines[:5]:
+            compact = re.sub(r"\s+", "", line)
+            chinese_count = len(re.findall(r"[\u4e00-\u9fff]", compact))
+            if (
+                2 <= chinese_count <= 20
+                and not re.search(r"年第\d*卷第\d*期", compact)
+            ):
+                journal = compact
+                break
+
     doi_match = DOI_PATTERN.search(first_text)
     doi = doi_match.group(0).rstrip(".,;:)]}") if doi_match else ""
 
@@ -781,6 +826,8 @@ def analyze_cnki_pdf(
             continuation_page = int(continuation.group(1))
             if continuation_page > end_page:
                 page_text += f", {continuation_page}"
+    if not page_text:
+        page_text = citation_pages
 
     citation_parts = [
         part
@@ -792,9 +839,19 @@ def analyze_cnki_pdf(
         if part
     ]
 
-    if not title or not author_names or not year:
+    missing_fields = [
+        label
+        for label, value in (
+            ("题名", title),
+            ("作者", author_names),
+            ("年份", year),
+        )
+        if not value
+    ]
+    if missing_fields:
         raise ValueError(
-            f"{filename}：知网 PDF 的题名、作者或年份识别不完整"
+            f"{filename}：知网 PDF 未可靠识别"
+            + "、".join(missing_fields)
         )
 
     return {
