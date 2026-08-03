@@ -1,0 +1,55 @@
+name: 自动识别并发布成果 PDF
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "incoming-achievements/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: auto-publish-achievements
+  cancel-in-progress: false
+
+jobs:
+  process-achievements:
+    name: 识别 PDF 并更新成果数据
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: 检出网站仓库
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: 配置 Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-achievements.txt
+
+      - name: 安装 PDF 识别依赖
+        run: python -m pip install --requirement requirements-achievements.txt
+
+      - name: 识别并归档待上传成果
+        run: python tools/achievement_manager.py --process-incoming
+
+      - name: 提交自动生成的成果记录
+        shell: bash
+        run: |
+          git add -A -- incoming-achievements data/achievements.json files/achievements
+          if git diff --cached --quiet; then
+            echo "没有需要提交的成果变更。"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "自动发布新成果 PDF"
+          git pull --rebase origin main
+          git push origin HEAD:main
