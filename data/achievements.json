@@ -116,5 +116,20 @@
     "originalFilename": "1-s2.0-S136192092600252X-main.pdf",
     "addedAt": "2026-08-03T06:49:51+00:00",
     "sourceSha256": "cbde093148487e28a2285e22f56d8b1942f97b257f05cb350861b74b2e41d612"
+  },
+  {
+    "id": "2026-4a27d34e8954",
+    "type": "paper",
+    "year": "2026",
+    "title": "Low-temperature binary eutectic paraffin microcapsules for latent heat storage and thermal buffering in asphalt binders",
+    "authorLine": "Ma, Feng; Pang, Meng; Jiang, Xinye",
+    "authors": "Ma, Feng; Pang, Meng; Jiang, Xinye; Fu, Zhen; Hou, Yingjie; Wen, Yalu; Dai, Jiasheng; Yang, Pengkai; Li, Siqi",
+    "journal": "Journal of Energy Storage",
+    "citation": "177: 123542",
+    "doi": "10.1016/j.est.2026.123542",
+    "pdf": "files/achievements/2026/2026-4a27d34e8954.pdf",
+    "originalFilename": "1-s2.0-S2352152X26032068-main.pdf",
+    "addedAt": "2026-08-03T07:03:59+00:00",
+    "sourceSha256": "4a27d34e89544d2acb0c55c5013c0b8824976d2c48f5946bf874a1d176bfb8f6"
   }
 ]
