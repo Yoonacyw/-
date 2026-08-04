@@ -207,5 +207,50 @@
     "originalFilename": "1-s2.0-S0950061826006045-main.pdf",
     "addedAt": "2026-08-04T03:16:07+00:00",
     "sourceSha256": "09dc15deacb468a8204721b2e0ec04149115a8994dd638dd15e0d793ab8a2892"
+  },
+  {
+    "id": "2026-7a18a2db78d1",
+    "type": "paper",
+    "year": "2026",
+    "title": "Flaked paraffin wax-based thermally enhanced composite phase change materials: Toward a highly efficient thermally responsive temperature-regulating asphalt pavement",
+    "authorLine": "Ma, Feng; Pang, Meng; Fu, Zhen",
+    "authors": "Ma, Feng; Pang, Meng; Fu, Zhen; Jiang, Xinye; An, Qiang; Hou, Yingjie; Dong, Wenhao; Liu, Jenny; Dai, Jiasheng",
+    "journal": "Construction and Building Materials",
+    "citation": "517: 145729",
+    "doi": "10.1016/j.conbuildmat.2026.145729",
+    "pdf": "files/achievements/2026/2026-7a18a2db78d1.pdf",
+    "originalFilename": "1-s2.0-S0950061826006306-main.pdf",
+    "addedAt": "2026-08-04T03:22:46+00:00",
+    "sourceSha256": "7a18a2db78d15aab0b83a90006bf4ab208958b258f4016d318523e3e88396368"
+  },
+  {
+    "id": "2025-b7f609807d73",
+    "type": "paper",
+    "year": "2025",
+    "title": "Comparative evaluation of mechanical degradation of asphalt mortars and mixtures caused by solution erosion and the underlying mechanism",
+    "authorLine": "Li, Chen; Ma, Feng; Fu, Zhen",
+    "authors": "Li, Chen; Ma, Feng; Fu, Zhen; Dai, Jiasheng; Gao, Yiming; Li, Weiqin; Liu, Xiaoyu; Jiang, Xinye; Zhang, Zhongzhe; Liu, Tao; Hou, Yingjie",
+    "journal": "Case Studies in Construction Materials",
+    "citation": "23: e05591",
+    "doi": "10.1016/j.cscm.2025.e05591",
+    "pdf": "files/achievements/2025/2025-b7f609807d73.pdf",
+    "originalFilename": "1-s2.0-S2214509525013890-main.pdf",
+    "addedAt": "2026-08-04T03:22:46+00:00",
+    "sourceSha256": "b7f609807d73899189eced71f380e93536277ae4040bdbd1a9acfe5e6d50cd35"
+  },
+  {
+    "id": "2026-c9d47f9847d4",
+    "type": "paper",
+    "year": "2026",
+    "title": "Design of melamine-urea-formaldehyde shell microencapsulated aliphatic-based phase change materials for asphalt modification: Preparation and performance evaluation",
+    "authorLine": "Ma, Feng; Hou, Yingjie; Zhang, Tianyi",
+    "authors": "Ma, Feng; Hou, Yingjie; Zhang, Tianyi; Fu, Zhen; Wen, Yalu; Dong, Wenhao; Shi, Ke; Dai, Jiasheng; Yuan, Kangbo",
+    "journal": "Thermal Science and Engineering Progress",
+    "citation": "69: 104444",
+    "doi": "10.1016/j.tsep.2025.104444",
+    "pdf": "files/achievements/2026/2026-c9d47f9847d4.pdf",
+    "originalFilename": "1-s2.0-S2451904925012351-main.pdf",
+    "addedAt": "2026-08-04T03:22:46+00:00",
+    "sourceSha256": "c9d47f9847d42bffc2b2ae4045197dc97900c61e66b79879b3fc60c52d5a429f"
   }
 ]
