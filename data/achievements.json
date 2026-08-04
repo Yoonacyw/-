@@ -146,5 +146,20 @@
     "originalFilename": "1.pdf",
     "addedAt": "2026-08-03T07:11:59+00:00",
     "sourceSha256": "f7f708791deb5b7d5ade240cdc42c7dc506b7d310543f908fa11acbfb7489f60"
+  },
+  {
+    "id": "2026-c3114ef5eedd",
+    "type": "paper",
+    "year": "2026",
+    "title": "Mechanical and rheological properties of SBS-modified asphalt binder under the synergistic effects of salt-freezing cycles and UV radiation",
+    "authorLine": "Guo, Qian; Fu, Zhen; Shi, Ke",
+    "authors": "Guo, Qian; Fu, Zhen; Shi, Ke; Barbieri, Diego Maria; Lou, Baowen; Ma, Feng; Wang, Yuhan",
+    "journal": "Construction and Building Materials",
+    "citation": "536: 146967",
+    "doi": "10.1016/j.conbuildmat.2026.146967",
+    "pdf": "files/achievements/2026/2026-c3114ef5eedd.pdf",
+    "originalFilename": "1-s2.0-S0950061826018751-main.pdf",
+    "addedAt": "2026-08-04T02:48:41+00:00",
+    "sourceSha256": "c3114ef5eedda8f9d99d1a135ac73700b4bf777ebb720c3b7af7f0117ee9ebff"
   }
 ]
