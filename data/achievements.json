@@ -161,5 +161,35 @@
     "originalFilename": "1-s2.0-S0950061826018751-main.pdf",
     "addedAt": "2026-08-04T02:48:41+00:00",
     "sourceSha256": "c3114ef5eedda8f9d99d1a135ac73700b4bf777ebb720c3b7af7f0117ee9ebff"
+  },
+  {
+    "id": "2026-6938f64cb8b2",
+    "type": "paper",
+    "year": "2026",
+    "title": "Synergistic electrical–fatigue performance of asphalt mixtures with embedded piezoelectric energy harvesters",
+    "authorLine": "Zhao, Zedong; Ma, Feng; Fu, Zhen",
+    "authors": "Zhao, Zedong; Ma, Feng; Fu, Zhen; Si, Shaofeng",
+    "journal": "Construction and Building Materials",
+    "citation": "535: 146989",
+    "doi": "10.1016/j.conbuildmat.2026.146989",
+    "pdf": "files/achievements/2026/2026-6938f64cb8b2.pdf",
+    "originalFilename": "1-s2.0-S0950061826018970-main.pdf",
+    "addedAt": "2026-08-04T02:57:42+00:00",
+    "sourceSha256": "6938f64cb8b24b5591476dab6a0e682604a62a89bc78d551be00d95974e7962b"
+  },
+  {
+    "id": "2026-ed9b9e180b5b",
+    "type": "paper",
+    "year": "2026",
+    "title": "Enhanced thermal conductivity and rheological performance of asphalt binders using expanded graphite–embedded microcapsule phase change materials",
+    "authorLine": "Ma, Feng; Gao, Shaoxiang; Hou, Yingjie",
+    "authors": "Ma, Feng; Gao, Shaoxiang; Hou, Yingjie; Fu, Zhen; Jiang, Xinye; Yang, Pengkai; Dai, Jiasheng; Wen, Yalu; Dong, Wenhao; An, Qiang",
+    "journal": "Journal of Energy Storage",
+    "citation": "166: 122336",
+    "doi": "10.1016/j.est.2026.122336",
+    "pdf": "files/achievements/2026/2026-ed9b9e180b5b.pdf",
+    "originalFilename": "1-s2.0-S2352152X26020001-main.pdf",
+    "addedAt": "2026-08-04T02:57:42+00:00",
+    "sourceSha256": "ed9b9e180b5b22e80fe7d2775c71a8be7082b4bb17a87b7b2e17b404d16b6516"
   }
 ]
