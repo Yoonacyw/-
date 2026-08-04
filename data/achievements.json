@@ -177,5 +177,35 @@
     "originalFilename": "1-s2.0-S2352152X26020001-main.pdf",
     "addedAt": "2026-08-04T02:57:42+00:00",
     "sourceSha256": "ed9b9e180b5b22e80fe7d2775c71a8be7082b4bb17a87b7b2e17b404d16b6516"
+  },
+  {
+    "id": "2026-14ed90b0d1f3",
+    "type": "paper",
+    "year": "2026",
+    "title": "Molecular dynamics study on the release behavior of chloride-free deicing salts in salt-storage fillers and interaction mechanisms with asphalt systems",
+    "authorLine": "Hou, Yingjie; Ma, Feng; Fu, Zhen",
+    "authors": "Hou, Yingjie; Ma, Feng; Fu, Zhen; Yang, Pengkai; Wang, Huayun; Jiang, Xinye; Hao, Yan; Dai, Jiasheng",
+    "journal": "Applied Surface Science",
+    "citation": "724: 165679",
+    "doi": "10.1016/j.apsusc.2025.165679",
+    "pdf": "files/achievements/2026/2026-14ed90b0d1f3.pdf",
+    "originalFilename": "1-s2.0-S0169433225033963-main.pdf",
+    "addedAt": "2026-08-04T03:16:07+00:00",
+    "sourceSha256": "14ed90b0d1f3075b20b52b05c74044c70ada7a22e3441fa5541191183a65da80"
+  },
+  {
+    "id": "2026-09dc15deacb4",
+    "type": "paper",
+    "year": "2026",
+    "title": "Rheological performance of asphalt binders modified with framework-supported high-latent-heat composite phase change materials",
+    "authorLine": "Ma, Feng; Zhao, Liang; Hou, Yingjie",
+    "authors": "Ma, Feng; Zhao, Liang; Hou, Yingjie; Fu, Zhen; Jiang, Xinye; Yang, Pengkai; Dong, Wenhao; Wen, Yalu; Dai, Jiasheng; An, Qiang",
+    "journal": "Construction and Building Materials",
+    "citation": "516: 145703",
+    "doi": "10.1016/j.conbuildmat.2026.145703",
+    "pdf": "files/achievements/2026/2026-09dc15deacb4.pdf",
+    "originalFilename": "1-s2.0-S0950061826006045-main.pdf",
+    "addedAt": "2026-08-04T03:16:07+00:00",
+    "sourceSha256": "09dc15deacb468a8204721b2e0ec04149115a8994dd638dd15e0d793ab8a2892"
   }
 ]
